@@ -40,7 +40,7 @@ public class User {
 
     private String region; //지역
 
-    @Column(name = "why_join")
-    private String whyJoin; //가입목적
+    @Column(name = "join_type")
+    private String joinType; //가입목적
 
 }
