@@ -8,9 +8,13 @@ import javax.persistence.*;
 @Getter
 public class LoanRate {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "loan_rate_id")
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private LoanProduct product;
 
     @Column(name = "lend_rate_type_nm")
     private String rateType; //대출금리유형

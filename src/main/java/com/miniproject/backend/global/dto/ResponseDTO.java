@@ -13,14 +13,17 @@ public class ResponseDTO<T> {
     private boolean success;
     private T data;
 
-    public ResponseDTO(int stateCode, boolean success, T data){
+    private String message;
+
+    public ResponseDTO(int stateCode, boolean success, T data, String msg){
         this.stateCode = stateCode;
         this.success = success;
         this.data = data;
+        this.message = msg;
     }
 
-    public ResponseDTO<T> ok(T data) {
-        return new ResponseDTO<>(200, true, data);
+    public ResponseDTO<T> ok(T data, String msg) {
+        return new ResponseDTO<>(200, true, data, msg);
     }
 
 }

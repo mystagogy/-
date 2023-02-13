@@ -11,9 +11,9 @@ import javax.persistence.*;
 @Table()
 public class LoanProduct {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
     @Column(name = "product_id")
-    private Long id;
+    private String id;
 
     @Column(name = "loan_type")
     private String type;
@@ -46,9 +46,5 @@ public class LoanProduct {
 
     @Column(name = "dcls_end_day")
     private String disclosureEndDay; // 공시종료일
-
-    @OneToOne
-    @JoinColumn(name = "loan_rate_id")
-    private LoanRate loanRate;
 
 }
