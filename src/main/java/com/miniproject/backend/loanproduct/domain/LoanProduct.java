@@ -26,6 +26,9 @@ public class LoanProduct {
     @JoinColumn(name = "bank_id")
     private Bank bank; //제공 은행
 
+    @Column(name = "product_name")
+    private String productNm;
+
     @Column(name = "join_way")
     private String joinWay; //가입 방법
 
