@@ -43,4 +43,7 @@ public class User {
     @Column(name = "join_type")
     private String joinType; //가입목적
 
+    @Column(name = "refresh_token")
+    private String refreshToken; //jwt 토큰
+
 }
