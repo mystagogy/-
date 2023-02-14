@@ -1,9 +1,11 @@
 package com.miniproject.backend.user.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -41,9 +43,21 @@ public class User {
     private String region; //지역
 
     @Column(name = "join_type")
-    private String joinType; //가입목적
+    private int joinType; //가입목적
 
     @Column(name = "refresh_token")
     private String refreshToken; //jwt 토큰
 
+    @Builder
+    public User(String name, String email, String password, String birth, int joinType) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birth = birth;
+        this.joinType = joinType;
+    }
+
+    public void encodePassword(PasswordEncoder passwordEncoder){
+        password = passwordEncoder.encode(password);
+    }
 }
