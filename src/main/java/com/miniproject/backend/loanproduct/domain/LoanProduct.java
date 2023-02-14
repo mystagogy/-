@@ -5,6 +5,8 @@ import com.miniproject.backend.category.Category;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -49,5 +51,9 @@ public class LoanProduct {
 
     @Column(name = "dcls_end_day")
     private String disclosureEndDay; // 공시종료일
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private List<LoanRate> loanRates = new ArrayList<>();
 
 }
