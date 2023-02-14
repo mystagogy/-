@@ -21,16 +21,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User signin(UserRequestDTO userRequestDTO) {
-
         //이메일 중복 확인
         Optional<User> user = userRepository.findByEmail(userRequestDTO.getEmail());
+
         if(user.isEmpty()){
             User newUser = userRequestDTO.toEntity();
             newUser.encodePassword(passwordEncoder);
             return userRepository.save(newUser);
-
+        }else{
+            throw new UserException(UserExceptionType.DUPLICATION_EMAIL);
         }
 
-        return null;
     }
 }
