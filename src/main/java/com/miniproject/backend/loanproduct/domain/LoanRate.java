@@ -12,7 +12,7 @@ public class LoanRate {
     @Column(name = "loan_rate_id")
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private LoanProduct product;
 
