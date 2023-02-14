@@ -12,9 +12,6 @@ public class Bank {
     @Column(name = "bank_name")
     private String bankNm;
 
-    @Column(name = "bank_tel")
-    private String telNum;
-
     @Column(name = "icon_path")
     private String imgPath;
 }
