@@ -17,7 +17,7 @@ public class ProductController {
     private final ProductService productService;
 
     @Operation(summary = "상품 리스트 api")
-    @GetMapping("/product")
+    @GetMapping("/products")
 
     public ResponseDTO<?> ProductList() {
         List<ProductListDTO> productListDTO = productService.selectProductList();

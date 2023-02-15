@@ -1,7 +1,5 @@
 package com.miniproject.backend.loanproduct.dto;
 
-import com.miniproject.backend.bank.Bank;
-import com.miniproject.backend.bank.BankProductDTO;
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.domain.LoanRate;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,25 +18,21 @@ public class ProductListDTO {
     @Schema(description = "상품아이디", defaultValue = "1")
     private Long id;
     @Schema(description = "상품 이름", defaultValue = "test대출")
-    private String productNm;
-
-    private BankProductDTO bankProductDTO;
+    private String productName;
+    @Schema(description = "은행 이름", defaultValue = "test은행")
+    private String bankName;
+    @Schema(description = "상품 이름", defaultValue = "은행 img")
+    private String bankImg;
     private List<LongRateShortDTO> longRateShortDTO;
+//    private List<LoanRate> loanRates;
 
-
-    public ProductListDTO(LoanProduct entity) {
-        this.id = Long.valueOf(entity.getId());
-        this.productNm = entity.getProductNm();
-        this.bankProductDTO = toBankDTO(entity.getBank());
-        this.longRateShortDTO = toRateDTO(entity.getLoanRates());
-    }
-
-    public BankProductDTO toBankDTO(Bank bank) {
-        return BankProductDTO.builder()
-                .bankNm(bank.getBankNm())
-                .imgPath(bank.getImgPath())
-                .build();
-
+    public ProductListDTO(LoanProduct loanProduct) {
+        this.id = loanProduct.getBank().getId();
+        this.productName = loanProduct.getProductNm();
+        this.bankName = loanProduct.getBank().getBankNm();
+        this.bankImg = loanProduct.getBank().getImgPath();
+        this.longRateShortDTO = toRateDTO(loanProduct.getLoanRates());
+//        this.loanRates = loanProduct.getLoanRates();
     }
 
     public List<LongRateShortDTO> toRateDTO(List<LoanRate> loanRates) {
