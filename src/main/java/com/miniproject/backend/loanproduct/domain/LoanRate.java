@@ -1,14 +1,20 @@
 package com.miniproject.backend.loanproduct.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
+@Table(name = "loan_rate")
 @Getter
 public class LoanRate {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "loan_rate_id")
     private Long id;
 
@@ -29,6 +35,5 @@ public class LoanRate {
 
     @Column(name = "mrtg_type_nm")
     private String mortgageType; //주담대만 나머진 null
-
 
 }
