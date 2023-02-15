@@ -40,7 +40,8 @@ public class UserServiceImpl implements UserService{
         Optional<User> user = userRepository.findByEmail(userEmail);
         if(!user.isEmpty()){
             return user.get();
+        }else{
+            throw new UserException(UserExceptionType.ACCOUNT_NOT_EXIST);
         }
-        return null;
     }
 }
