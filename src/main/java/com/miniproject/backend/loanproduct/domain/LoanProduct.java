@@ -15,7 +15,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "loan_product")
-
 public class LoanProduct {
 
     @Id

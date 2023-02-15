@@ -4,7 +4,6 @@ import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
 import com.miniproject.backend.loanproduct.repository.ProductRepository;
 import com.miniproject.backend.loanproduct.service.ProductService;
-import com.miniproject.backend.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
