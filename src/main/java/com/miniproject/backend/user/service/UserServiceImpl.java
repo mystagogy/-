@@ -24,13 +24,23 @@ public class UserServiceImpl implements UserService{
         //이메일 중복 확인
         Optional<User> user = userRepository.findByEmail(userRequestDTO.getEmail());
 
-        if(user.isEmpty()){
+        if (user.isEmpty()) {
             User newUser = userRequestDTO.toEntity();
             newUser.encodePassword(passwordEncoder);
             return userRepository.save(newUser);
-        }else{
+        } else {
             throw new UserException(UserExceptionType.DUPLICATION_EMAIL);
         }
 
+    }
+
+
+    @Override
+    public User findUserByUserId(String userEmail) {
+        Optional<User> user = userRepository.findByEmail(userEmail);
+        if(!user.isEmpty()){
+            return user.get();
+        }
+        return null;
     }
 }
