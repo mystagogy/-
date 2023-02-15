@@ -1,28 +1,24 @@
 package com.miniproject.backend.global.exception;
 
 import com.miniproject.backend.global.dto.ErrorDTO;
+import com.miniproject.backend.global.exception.base.CustomException;
+import com.miniproject.backend.user.exception.UserException;
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-public class CustomExceptionHandler {
+@RestControllerAdvice
+public class CustomExceptionHandler implements ErrorController {
 
-    // 400, 401, 403, 404 에러 잡는 핸들러
-    @ExceptionHandler
-    public ErrorDTO globalHandle(GlobalExceptionType e){
+    //custom exception 처리 핸들러
+    @ExceptionHandler(value = UserException.class)
+    public ErrorDTO handleUserException(CustomException ce){
         return ErrorDTO.builder()
-                .errorCode(e.getErrorCode())
-                .errorMessage(e.getMessage())
+                .errorCode(ce.getExceptionType().getErrorCode())
+                .errorMessage(ce.getExceptionType().getMessage())
                 .build();
     }
-
-    //500 에러 잡는 핸들러
-    @ExceptionHandler
-    public ErrorDTO exception(Exception e) {
-        return ErrorDTO.builder()
-                .errorCode(GlobalExceptionType.INTERNAL_ERROR.getErrorCode())
-                .errorMessage(GlobalExceptionType.INTERNAL_ERROR.getErrorMsg())
-                .build();
-    }
-
-
 
 }
