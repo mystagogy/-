@@ -58,7 +58,7 @@ public class LoanProduct {
     private String disclosureEndDay; // 공시종료일
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "loan_rate_id")
+    @JoinColumn(name = "product_id")
     private List<LoanRate> loanRates = new ArrayList<>();
 
 }
