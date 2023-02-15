@@ -2,7 +2,9 @@ package com.miniproject.backend.loanproduct.domain;
 
 import com.miniproject.backend.bank.Bank;
 import com.miniproject.backend.category.Category;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +12,10 @@ import java.util.List;
 
 @Entity
 @Getter
-@Table()
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "loan_product")
+
 public class LoanProduct {
 
     @Id
@@ -18,7 +23,7 @@ public class LoanProduct {
     private String id;
 
     @Column(name = "loan_type")
-    private String type;
+    private String type; //
 
     @OneToOne
     @JoinColumn(name = "ca_id")
@@ -53,7 +58,7 @@ public class LoanProduct {
     private String disclosureEndDay; // 공시종료일
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "loan_rate_id")
     private List<LoanRate> loanRates = new ArrayList<>();
 
 }
