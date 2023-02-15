@@ -4,10 +4,12 @@ import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
 import com.miniproject.backend.loanproduct.repository.ProductRepository;
 import com.miniproject.backend.loanproduct.service.ProductService;
+import com.miniproject.backend.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,5 +25,14 @@ public class ProductServiceImpl implements ProductService {
         return productsList.stream()
                 .map(ProductListDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public LoanProduct findProductByProductId(String productId) {
+        Optional<LoanProduct> loanProduct = productRepository.findById(productId);
+        if(!loanProduct.isEmpty()){
+            return loanProduct.get();
+        }
+        return null;
     }
 }
