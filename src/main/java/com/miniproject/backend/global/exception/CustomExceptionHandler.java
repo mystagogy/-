@@ -4,11 +4,10 @@ import com.miniproject.backend.global.dto.ErrorDTO;
 import com.miniproject.backend.global.exception.base.CustomException;
 import com.miniproject.backend.like.exception.LikeException;
 import com.miniproject.backend.loanproduct.exception.ProductException;
+import com.miniproject.backend.shoppingbasket.exception.BasketException;
 import com.miniproject.backend.user.exception.UserException;
 import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -33,6 +32,14 @@ public class CustomExceptionHandler implements ErrorController {
 
     @ExceptionHandler(value = LikeException.class)
     public ErrorDTO handleLikeException(CustomException ce){
+        return ErrorDTO.builder()
+                .errorCode(ce.getExceptionType().getErrorCode())
+                .errorMessage(ce.getExceptionType().getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(value = BasketException.class)
+    public ErrorDTO handleBasketException(CustomException ce){
         return ErrorDTO.builder()
                 .errorCode(ce.getExceptionType().getErrorCode())
                 .errorMessage(ce.getExceptionType().getMessage())
