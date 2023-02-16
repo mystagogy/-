@@ -36,4 +36,13 @@ public class LikeController {
         return new ResponseDTO<>().ok(likeResponseDtoList, "정상출력");
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "관심상품삭제")
+    @DeleteMapping("/like")
+    public ResponseDTO<?> deleteLike(@RequestParam String userEmail, @RequestParam Long Id){
+
+        List<LikeResponseDto> likeResponseDtoList = likeService.deleteLike(userEmail,Id);
+        return new ResponseDTO<>().ok(likeResponseDtoList, "정상출력");
+    }
+
 }
