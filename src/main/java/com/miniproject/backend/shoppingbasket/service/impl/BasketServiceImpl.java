@@ -51,7 +51,7 @@ public class BasketServiceImpl implements BasketService {
             basketRepository.save(basketResult);
             return new BasketResponseDTO(basketResult);
         } else {
-            return null;
+            throw new BasketException(BasketExceptionType.EXIST_BASKET);
         }
     }
 
@@ -66,7 +66,7 @@ public class BasketServiceImpl implements BasketService {
             basketRepository.deleteByUserAndLoanProduct(user, loanProduct);
             return "성공적으로 삭제되었습니다.";
         }else{
-           return null;
+           throw new BasketException(BasketExceptionType.NOT_EXIST_BASKET);
        }
 
 
