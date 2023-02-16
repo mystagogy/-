@@ -6,5 +6,9 @@ import java.util.List;
 
 public interface BasketService {
 
-    public List<BasketResponseDTO> selectBasketList(String email);
+    List<BasketResponseDTO> selectBasketList(String email);
+
+    BasketResponseDTO insertBasket(String email, String productId);
+
+    String deleteBasket(String email,String productId);
 }
