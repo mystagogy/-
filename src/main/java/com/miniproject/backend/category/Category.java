@@ -14,6 +14,4 @@ public class Category {
     @Column(name = "ca_name")
     private String categoryName;
 
-    @Column(name = "ca_num")
-    private String categoryNum;
 }
