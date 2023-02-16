@@ -20,9 +20,7 @@ public class LikeController {
     public ResponseDTO<?> insertLike(@RequestParam String productId, @RequestParam String userEmail) {
 
         LikeResponseDto likeResponseDto =likeService.addLike(productId, userEmail);
-        if(likeResponseDto != null){
-            return new ResponseDTO<>().ok(likeResponseDto, "정상출력");
-        }
-        return null;
+        return new ResponseDTO<>().ok(likeResponseDto, "정상출력");
+
     }
 }

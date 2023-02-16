@@ -2,6 +2,8 @@ package com.miniproject.backend.loanproduct.service.impl;
 
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
+import com.miniproject.backend.loanproduct.exception.ProductException;
+import com.miniproject.backend.loanproduct.exception.ProductExceptionType;
 import com.miniproject.backend.loanproduct.repository.ProductRepository;
 import com.miniproject.backend.loanproduct.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,8 @@ public class ProductServiceImpl implements ProductService {
         Optional<LoanProduct> loanProduct = productRepository.findById(productId);
         if(!loanProduct.isEmpty()){
             return loanProduct.get();
+        }else{
+            throw new ProductException(ProductExceptionType.PRODUCT_NOT_EXIST);
         }
-        return null;
     }
 }
