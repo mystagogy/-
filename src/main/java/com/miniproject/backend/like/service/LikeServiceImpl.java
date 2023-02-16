@@ -8,7 +8,6 @@ import com.miniproject.backend.like.exception.LikeExceptionType;
 import com.miniproject.backend.like.repository.LikeRepository;
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.service.ProductService;
-import com.miniproject.backend.shoppingbasket.dto.BasketResponseDTO;
 import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -70,15 +68,23 @@ public class LikeServiceImpl implements LikeService{
                     .loanLimit(like.getLoanProduct().getLoanLimit())
                     .build());
         }
-        return likeList;
+        if(!likeList.isEmpty()) {
+            return likeList;
+        }
+        else throw new LikeException(LikeExceptionType.EMPTY_LIKE_LIST);
     }
 
     @Override
     public List<LikeResponseDto> deleteLike(String email, long Id) {
         User user = userService.findUserByUserId(email);
         Like like = likeRepository.findLikeByIdAndUser(Id, user);
-        likeRepository.delete(like);
-        return selectAllLike(email);
+        if(like != null){
+            likeRepository.delete(like);
+            return selectAllLike(email);
+        }else{
+            throw new LikeException(LikeExceptionType.NOT_EXIST_LIKE);
+        }
+
     }
 
 }
