@@ -13,7 +13,7 @@ public class LongRateShortDTO {
 
 
     @Schema(description = "평균 금리", defaultValue = "1.11")
-    private float avgRate;
+    private Float avgRate;
 
     public LongRateShortDTO(LoanRate entity) {
         this.avgRate = entity.getAvgRate();
