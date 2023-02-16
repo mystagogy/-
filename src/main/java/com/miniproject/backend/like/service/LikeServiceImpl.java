@@ -27,9 +27,11 @@ public class LikeServiceImpl implements LikeService{
     private final UserService userService;
     private final ProductService productService;
 
+
+    @Override
     public LikeResponseDto addLike(LikeRequestDto likeRequestDto) {
 
-        User user = userService.findUserByUserId(likeRequestDto.getUserEamil());
+        User user = userService.findUserByUserId(likeRequestDto.getUserEmail());
         LoanProduct loanProduct = productService.findProductByProductId(likeRequestDto.getProductId());
 
         if(!likeRepository.existsByUserAndLoanProduct(user,loanProduct)){
@@ -69,6 +71,14 @@ public class LikeServiceImpl implements LikeService{
                     .build());
         }
         return likeList;
-
     }
+
+    @Override
+    public List<LikeResponseDto> deleteLike(String email, long Id) {
+        User user = userService.findUserByUserId(email);
+        Like like = likeRepository.findLikeByIdAndUser(Id, user);
+        likeRepository.delete(like);
+        return selectAllLike(email);
+    }
+
 }
