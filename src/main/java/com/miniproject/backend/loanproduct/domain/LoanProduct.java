@@ -21,9 +21,6 @@ public class LoanProduct {
     @Column(name = "product_id")
     private String id;
 
-    @Column(name = "loan_type")
-    private String type; //
-
     @OneToOne
     @JoinColumn(name = "ca_id")
     private Category category;
