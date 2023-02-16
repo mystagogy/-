@@ -23,6 +23,8 @@ public class ProductListDTO {
     private String bankName;
     @Schema(description = "상품 이름", defaultValue = "은행 img")
     private String bankImg;
+    @Schema(description = "카테고리 이름", defaultValue = " ")
+    private String categoryName;
     private List<LongRateShortDTO> longRateShortDTO;
 //    private List<LoanRate> loanRates;
 
@@ -32,6 +34,7 @@ public class ProductListDTO {
         this.bankName = loanProduct.getBank().getBankNm();
         this.bankImg = loanProduct.getBank().getImgPath();
         this.longRateShortDTO = toRateDTO(loanProduct.getLoanRates());
+        this.categoryName = loanProduct.getCategory().getCategoryName();
 //        this.loanRates = loanProduct.getLoanRates();
     }
 
