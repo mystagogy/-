@@ -68,7 +68,10 @@ public class LikeServiceImpl implements LikeService{
                     .loanLimit(like.getLoanProduct().getLoanLimit())
                     .build());
         }
-        return likeList;
+        if(!likeList.isEmpty()) {
+            return likeList;
+        }
+        else throw new LikeException(LikeExceptionType.EMPTY_LIKE_LIST);
     }
 
     @Override
