@@ -1,6 +1,7 @@
 package com.miniproject.backend.loanproduct.service.impl;
 
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
+import com.miniproject.backend.loanproduct.dto.ProductDetailDTO;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
 import com.miniproject.backend.loanproduct.exception.ProductException;
 import com.miniproject.backend.loanproduct.exception.ProductExceptionType;
@@ -37,4 +38,12 @@ public class ProductServiceImpl implements ProductService {
             throw new ProductException(ProductExceptionType.PRODUCT_NOT_EXIST);
         }
     }
+
+    @Override
+    public ProductDetailDTO findById(String productId) {
+        LoanProduct loanProduct = productRepository.findById(productId).orElseThrow();
+        return new ProductDetailDTO(loanProduct);
+    }
+
+
 }
