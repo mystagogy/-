@@ -10,5 +10,5 @@ public interface BasketService {
 
     BasketResponseDTO insertBasket(String email, String productId);
 
-    String deleteBasket(String email,String productId);
+    String deleteBasket(String email,Long basketId);
 }
