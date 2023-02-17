@@ -4,15 +4,15 @@ import com.miniproject.backend.global.dto.ResponseDTO;
 import com.miniproject.backend.loanproduct.dto.ProductDetailDTO;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
 import com.miniproject.backend.loanproduct.service.ProductService;
+import com.miniproject.backend.loanproduct.dto.SearchResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Operation(summary = "상품 리스트 ")
+    @Operation(summary = "상품 리스트 api")
     @GetMapping("/products")
 
     public ResponseDTO<?> ProductList() {
@@ -35,5 +35,13 @@ public class ProductController {
         return new ResponseDTO<>().ok(productDetailDTO,"정상 출력");
     }
 
+
+    @Operation(summary = "상품검색")
+    @GetMapping("/search")
+    public ResponseDTO<?> searchProduct(@RequestParam String keyword) {
+        List<SearchResponseDto> searchResponseDtoList = productService.searchList(keyword);
+        return new ResponseDTO<>().ok(searchResponseDtoList,"정상 출력");
+
+    }
 
 }
