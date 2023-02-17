@@ -31,9 +31,10 @@ public class BasketServiceImpl implements BasketService {
     @Override
     public List<BasketResponseDTO> selectBasketList(String email) {
         User user = userService.findUserByUserId(email);
-            return basketRepository.findById(user.getId())
-                    .stream()
-                    .map(entity -> new BasketResponseDTO(entity)).collect(Collectors.toList());
+        List<BasketResponseDTO> basketList = basketRepository.findByUser(user).stream()
+                .map(entity -> new BasketResponseDTO(entity)).collect(Collectors.toList());
+
+        return basketList;
 
     }
 
@@ -57,17 +58,17 @@ public class BasketServiceImpl implements BasketService {
 
     @Transactional
     @Override
-    public String deleteBasket(String email, String productId) {
+    public String deleteBasket(String email, Long basketId) {
 
         User user = userService.findUserByUserId(email);
-        LoanProduct loanProduct = productService.findProductByProductId(productId);
+        Optional<Basket> basketOptional = basketRepository.findByIdAndUser(basketId,user);
 
-        if (basketRepository.existsByUserAndLoanProduct(user,loanProduct)) {
-            basketRepository.deleteByUserAndLoanProduct(user, loanProduct);
+        if (basketOptional.isPresent()) {
+            basketRepository.delete(basketOptional.get());
             return "성공적으로 삭제되었습니다.";
         }else{
-           throw new BasketException(BasketExceptionType.NOT_EXIST_BASKET);
-       }
+            throw new BasketException(BasketExceptionType.NOT_EXIST_BASKET);
+        }
 
 
     }

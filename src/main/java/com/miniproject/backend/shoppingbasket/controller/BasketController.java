@@ -34,8 +34,10 @@ public class BasketController {
 
     @Operation(description = "장바구니 삭제하는 api")
     @DeleteMapping("/cart")
-    public ResponseDTO<?> deleteBasket(@RequestParam String email, @RequestParam String productId){
-        String msg = basketService.deleteBasket(email, productId);
+    public ResponseDTO<?> deleteBasket(@RequestParam String email, @RequestParam Long basketId){
+        String msg = basketService.deleteBasket(email, basketId);
         return new ResponseDTO<>().ok(msg,"성공적으로 삭제되었습니다.");
     }
+
+
 }
