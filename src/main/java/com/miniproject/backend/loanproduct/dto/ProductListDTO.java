@@ -6,12 +6,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Builder
 @Getter
-@ToString
 @Schema(name = "제품 리스트 출력 데이터 ")
 public class ProductListDTO {
 
@@ -25,21 +23,25 @@ public class ProductListDTO {
     private String bankImg;
     @Schema(description = "카테고리 이름", defaultValue = " ")
     private String categoryName;
-    private List<LongRateShortDTO> longRateShortDTO;
-//    private List<LoanRate> loanRates;
+    @Schema(description = "평균금리", defaultValue = "1.11")
+    private Float avgRate;
 
     public ProductListDTO(LoanProduct loanProduct) {
         this.id = loanProduct.getBank().getId();
         this.productName = loanProduct.getProductNm();
         this.bankName = loanProduct.getBank().getBankNm();
         this.bankImg = loanProduct.getBank().getImgPath();
-        this.longRateShortDTO = toRateDTO(loanProduct.getLoanRates());
+        this.avgRate = getAvgRate(loanProduct.getLoanRates());
         this.categoryName = loanProduct.getCategory().getCategoryName();
-//        this.loanRates = loanProduct.getLoanRates();
     }
 
-    public List<LongRateShortDTO> toRateDTO(List<LoanRate> loanRates) {
-        return loanRates.stream().map(LongRateShortDTO::new)
-                .collect(Collectors.toList());
+    public Float getAvgRate(List<LoanRate> loanRates) {
+        Float avg = 0f;
+        for (LoanRate loanRate : loanRates) {
+            if (loanRate.getAvgRate() != null)
+                avg = loanRate.getAvgRate();
+        }
+        return avg;
     }
+
 }
