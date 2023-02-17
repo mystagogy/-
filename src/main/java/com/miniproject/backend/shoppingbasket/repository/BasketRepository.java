@@ -19,5 +19,5 @@ public interface BasketRepository extends JpaRepository<Basket,Long> {
 
     Optional<Basket> findByIdAndUser(Long basketId, User user);
 
-
+    Optional<Basket> findByUserAndLoanProduct(User user, LoanProduct loanProduct);
 }

@@ -31,7 +31,7 @@ public class BasketServiceImpl implements BasketService {
     @Override
     public List<BasketResponseDTO> selectBasketList(String email) {
         User user = userService.findUserByUserId(email);
-        List<BasketResponseDTO> basketList = basketRepository.findByUser(user).stream()
+        List<BasketResponseDTO> basketList = basketRepository.findByUser(user).stream().filter(en->en.getPurchase()==0)
                 .map(entity -> new BasketResponseDTO(entity)).collect(Collectors.toList());
 
         return basketList;
