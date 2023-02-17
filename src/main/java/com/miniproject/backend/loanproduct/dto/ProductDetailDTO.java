@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 public class ProductDetailDTO {
 
@@ -31,8 +33,7 @@ public class ProductDetailDTO {
     private String disclosureStartDay;
     @Schema(name = "공시 종료일")
     private String disclosureEndDay;
-    @Schema(name = "대출금리 리스트")
-    private List<LoanRate> loanRates;
+    private List<LongRateDTO> longRateDTO;
 
     public ProductDetailDTO(LoanProduct loanProduct) {
         this.ProductId = loanProduct.getId();
@@ -46,7 +47,11 @@ public class ProductDetailDTO {
         this.loanLimit = loanProduct.getLoanLimit();
         this.disclosureStartDay = loanProduct.getDisclosureStartDay();
         this.disclosureEndDay = loanProduct.getDisclosureEndDay();
-        this.loanRates = loanProduct.getLoanRates();
+        this.longRateDTO = toRateDTO(loanProduct.getLoanRates());
     }
 
+    public List<LongRateDTO> toRateDTO(List<LoanRate> loanRates) {
+        return loanRates.stream().map(LongRateDTO::new)
+                .collect(Collectors.toList());
+    }
 }
