@@ -3,6 +3,7 @@ package com.miniproject.backend.loanproduct.service.impl;
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.dto.ProductDetailDTO;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
+import com.miniproject.backend.loanproduct.dto.SearchResponseDto;
 import com.miniproject.backend.loanproduct.exception.ProductException;
 import com.miniproject.backend.loanproduct.exception.ProductExceptionType;
 import com.miniproject.backend.loanproduct.repository.ProductRepository;
@@ -10,6 +11,7 @@ import com.miniproject.backend.loanproduct.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,4 +48,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    @Override
+    public List<SearchResponseDto> searchList(String keyword) {
+        List<LoanProduct> products = productRepository.findByProductNmContaining(keyword);
+        List<SearchResponseDto> searchList = new ArrayList<>();
+        for(LoanProduct product : products){
+            searchList.add(SearchResponseDto.builder()
+                    .productId(product.getId())
+                    .bankImgPath(product.getBank().getImgPath())
+                    .bankName(product.getBank().getBankNm())
+                    .productName(product.getProductNm())
+                    .loanRateList(product.getLoanRates())
+                    .loanLimit(product.getLoanLimit())
+                    .build());
+        }
+        return searchList;
+    }
 }
