@@ -28,7 +28,7 @@ public class AuthToken {
     private String createAuthToken(String subject, Date expiry){
         return Jwts.builder()
                 // header 내용 및 SECRET_KEY 세팅
-                .signWith(key, SignatureAlgorithm.HS512) //알고리즘
+                .signWith(key, SignatureAlgorithm.HS256) //알고리즘
                 // payload
                 .setClaims(Jwts.claims().setSubject(subject)) // sub
                 .setIssuer("1 team backend") // iss
