@@ -2,11 +2,13 @@ package com.miniproject.backend.global.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private Long userId; //pk
     private String email; //로그인 아이디
