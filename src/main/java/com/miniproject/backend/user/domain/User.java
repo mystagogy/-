@@ -60,4 +60,8 @@ public class User {
     public void encodePassword(PasswordEncoder passwordEncoder){
         password = passwordEncoder.encode(password);
     }
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
 }
