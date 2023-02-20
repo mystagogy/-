@@ -15,21 +15,21 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @Operation(description = "구매 등록하는 api")
+    @Operation(summary = "구매 등록")
     @PostMapping("/order")
     public ResponseDTO<?> buyCart(@RequestParam String email, @RequestParam String productId){
         BasketResponseDTO basketResponseDTO = orderService.buyCart(email, productId);
         return new ResponseDTO<>().ok(basketResponseDTO,"성공적으로 구매 완료되었습니다!");
     }
 
-    @Operation(description = "구매 리스트 출력하는 api")
+    @Operation(summary = "구매 리스트 출력")
     @GetMapping("/order")
     public ResponseDTO<?> showBuyList(@RequestParam String email){
         List<BasketResponseDTO> basketResponseDTO = orderService.selectBuyList(email);
         return new ResponseDTO<>().ok(basketResponseDTO,"정상출력 데이터");
     }
 
-    @Operation(description = "구매 삭제하는 api")
+    @Operation(summary = "구매 삭제")
     @DeleteMapping("/order")
     public ResponseDTO<?> deleteBuy(@RequestParam String email, @RequestParam Long basketId){
         String msg = orderService.deleteBuy(email, basketId);
