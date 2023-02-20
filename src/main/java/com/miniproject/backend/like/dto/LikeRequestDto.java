@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 @Schema(name = "관심상품 요청 데이터")
 public class LikeRequestDto {
 
-    private String userEmail;
     private String productId;
 }
