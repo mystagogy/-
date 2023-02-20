@@ -28,5 +28,14 @@ public class LikeResponseDto {
     private List<LoanRate> loanRateList;
     private String loanLimit;
 
+    public  LikeResponseDto(Like like){
+        this.likeId = like.getId();
+        this.bankImgPath = like.getLoanProduct().getBank().getImgPath();
+        this.bankName = like.getLoanProduct().getBank().getBankNm();
+        this.productName = like.getLoanProduct().getProductNm();
+        this.loanRateList = like.getLoanProduct().getLoanRates();
+        this.loanLimit = like.getLoanProduct().getLoanLimit();
+    }
+
 
 }
