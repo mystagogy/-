@@ -1,21 +1,17 @@
 package com.miniproject.backend.like.service;
 
-import com.miniproject.backend.global.jwt.CustomUserDetails;
 import com.miniproject.backend.like.domain.Like;
-import com.miniproject.backend.like.dto.LikeRequestDto;
-import com.miniproject.backend.like.dto.LikeResponseDto;
+import com.miniproject.backend.like.dto.LikeDto;
 import com.miniproject.backend.like.exception.LikeException;
 import com.miniproject.backend.like.exception.LikeExceptionType;
 import com.miniproject.backend.like.repository.LikeRepository;
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.service.ProductService;
-import com.miniproject.backend.shoppingbasket.dto.BasketResponseDTO;
 import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +26,7 @@ public class LikeServiceImpl implements LikeService{
 
 
     @Override
-    public LikeResponseDto addLike(String email, String productId) {
+    public LikeDto.Response addLike(String email, String productId) {
 
         User user = userService.findUserByUserId(email);
         LoanProduct loanProduct = productService.findProductByProductId(productId);
@@ -42,18 +38,18 @@ public class LikeServiceImpl implements LikeService{
                     .build();
             likeRepository.save(like);
 
-            LikeResponseDto likeResponseDto = new LikeResponseDto(like);
-            return likeResponseDto;
+            LikeDto.Response responseDto = new LikeDto.Response(like);
+            return responseDto;
         }else{
             throw new LikeException(LikeExceptionType.EXIST_LIKE);
         }
     }
 
     @Override
-    public List<LikeResponseDto> selectAllLike(String email) {
+    public List<LikeDto.Response> selectAllLike(String email) {
         User user = userService.findUserByUserId(email);
         List<Like> likes = likeRepository.findLikesByUser(user);
-        List<LikeResponseDto> likeList = likes.stream().map(like -> new LikeResponseDto(like)).collect(Collectors.toList());
+        List<LikeDto.Response> likeList = likes.stream().map(like -> new LikeDto.Response(like)).collect(Collectors.toList());
         if(!likeList.isEmpty()) {
             return likeList;
         }
@@ -61,7 +57,7 @@ public class LikeServiceImpl implements LikeService{
     }
 
     @Override
-    public List<LikeResponseDto> deleteLike(String email, long Id) {
+    public List<LikeDto.Response> deleteLike(String email, long Id) {
         User user = userService.findUserByUserId(email);
         Like like = likeRepository.findLikeByIdAndUser(Id, user);
         if(like != null){
@@ -70,7 +66,5 @@ public class LikeServiceImpl implements LikeService{
         }else{
             throw new LikeException(LikeExceptionType.NOT_EXIST_LIKE);
         }
-
     }
-
 }
