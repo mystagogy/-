@@ -1,6 +1,7 @@
 package com.miniproject.backend.loanproduct.service.impl;
 
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
+import com.miniproject.backend.loanproduct.dto.PagingDTO;
 import com.miniproject.backend.loanproduct.dto.ProductDetailDTO;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
 import com.miniproject.backend.loanproduct.dto.SearchResponseDto;
@@ -9,6 +10,8 @@ import com.miniproject.backend.loanproduct.exception.ProductExceptionType;
 import com.miniproject.backend.loanproduct.repository.ProductRepository;
 import com.miniproject.backend.loanproduct.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -49,9 +52,11 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<SearchResponseDto> searchList(String keyword) {
-        List<LoanProduct> products = productRepository.findByProductNmContaining(keyword);
+    public PagingDTO searchList(String keyword, Pageable pageable) {
+
         List<SearchResponseDto> searchList = new ArrayList<>();
+        Page<LoanProduct> products = productRepository.findByProductNmContaining(keyword, pageable);
+        int pages = products.getTotalPages();
         for(LoanProduct product : products){
             searchList.add(SearchResponseDto.builder()
                     .productId(product.getId())
@@ -62,6 +67,15 @@ public class ProductServiceImpl implements ProductService {
                     .loanLimit(product.getLoanLimit())
                     .build());
         }
-        return searchList;
+        if(searchList.size() != 0){
+            return PagingDTO.builder()
+                    .num(searchList.size())
+                    .searchList(searchList)
+                    .current(pageable.getPageNumber())
+                    .total(pages)
+                    .build();
+        }else{
+            throw new ProductException(ProductExceptionType.SEARCH_NOT_EXIST);
+        }
     }
 }

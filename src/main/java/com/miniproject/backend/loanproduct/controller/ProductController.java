@@ -1,12 +1,14 @@
 package com.miniproject.backend.loanproduct.controller;
 
 import com.miniproject.backend.global.dto.ResponseDTO;
+import com.miniproject.backend.loanproduct.dto.PagingDTO;
 import com.miniproject.backend.loanproduct.dto.ProductDetailDTO;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
 import com.miniproject.backend.loanproduct.service.ProductService;
-import com.miniproject.backend.loanproduct.dto.SearchResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,9 +40,9 @@ public class ProductController {
 
     @Operation(summary = "상품검색")
     @GetMapping("/search")
-    public ResponseDTO<?> searchProduct(@RequestParam String keyword) {
-        List<SearchResponseDto> searchResponseDtoList = productService.searchList(keyword);
-        return new ResponseDTO<>().ok(searchResponseDtoList,"정상 출력");
+    public ResponseDTO<?> searchProduct(@RequestParam String keyword, @PageableDefault(size = 8)Pageable pageable) {
+       PagingDTO pagingDTO = productService.searchList(keyword, pageable);
+       return new ResponseDTO<>().ok(pagingDTO,"정상 출력");
 
     }
 
