@@ -32,8 +32,8 @@ public class LoginController {
         loginService.updateRefresh(user, refreushToken);
         ResponseCookie tokenCookie = cookieProvider.createRefreshTokenCookie(refreushToken.getToken());
 
-        log.info(String.valueOf(authToken));
+        log.info(String.valueOf(authToken.getToken()));
 
-        return new ResponseDTO<>().ok(true,"로그인 성공");
+        return new ResponseDTO<>().ok(authToken.getToken(),"로그인 성공");
     }
 }
