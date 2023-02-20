@@ -34,6 +34,16 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    @Override
+    public Boolean updatePassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
+        );
+        System.out.println(user.getPassword());
+        user.updatePassword(passwordEncoder, newPassword);
+        System.out.println(user.getPassword());
+        return true;
+    }
 
     @Override
     public User findUserByUserId(String userEmail) {
@@ -43,5 +53,16 @@ public class UserServiceImpl implements UserService{
         }else{
             throw new UserException(UserExceptionType.ACCOUNT_NOT_EXIST);
         }
+    }
+
+    @Override
+    public Boolean matchedPasswords(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                ()-> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
+        );
+
+        password = passwordEncoder.encode(password);
+
+        return passwordEncoder.matches(user.getPassword(), password);
     }
 }
