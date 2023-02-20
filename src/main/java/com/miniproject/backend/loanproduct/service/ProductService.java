@@ -1,10 +1,12 @@
 package com.miniproject.backend.loanproduct.service;
 
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
+import com.miniproject.backend.loanproduct.dto.PagingDTO;
 import com.miniproject.backend.loanproduct.dto.ProductDetailDTO;
 import com.miniproject.backend.loanproduct.dto.ProductListDTO;
-import com.miniproject.backend.loanproduct.dto.SearchResponseDto;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 @Service
@@ -16,5 +18,5 @@ public interface ProductService {
 
     ProductDetailDTO findById (String ProductId);
 
-    List<SearchResponseDto> searchList(String keyword);
+    PagingDTO searchList(String keyword, Pageable pageable);
 }
