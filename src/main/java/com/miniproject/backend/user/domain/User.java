@@ -64,4 +64,8 @@ public class User {
     public void updateRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }
+
+    public void updatePassword(PasswordEncoder passwordEncoder, String newPw){
+        this.password = passwordEncoder.encode(newPw);
+    }
 }
