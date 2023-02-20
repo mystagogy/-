@@ -16,7 +16,7 @@ public class BasketController {
     private final BasketService basketService;
 
 
-    @Operation(description = "장바구니 리스트 출력하는 api")
+    @Operation(summary = "장바구니 리스트 출력")
     @GetMapping("/cart")
     public ResponseDTO<?> showBasketList(@RequestParam String email){
         List<BasketResponseDTO> basketResponseDTO = basketService.selectBasketList(email);
@@ -24,7 +24,7 @@ public class BasketController {
     }
 
 
-    @Operation(description = "장바구니 등록하는 api")
+    @Operation(summary = "장바구니 등록")
     @PostMapping("/cart")
     public ResponseDTO<?> addBasket(@RequestParam String email, @RequestParam String productId){
         BasketResponseDTO basketResponseDTO = basketService.insertBasket(email, productId);
@@ -32,7 +32,7 @@ public class BasketController {
 
     }
 
-    @Operation(description = "장바구니 삭제하는 api")
+    @Operation(summary = "장바구니 삭제")
     @DeleteMapping("/cart")
     public ResponseDTO<?> deleteBasket(@RequestParam String email, @RequestParam Long basketId){
         String msg = basketService.deleteBasket(email, basketId);

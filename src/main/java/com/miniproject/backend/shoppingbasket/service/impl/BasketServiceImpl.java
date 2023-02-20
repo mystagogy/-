@@ -60,11 +60,10 @@ public class BasketServiceImpl implements BasketService {
     @Override
     public String deleteBasket(String email, Long basketId) {
 
-        User user = userService.findUserByUserId(email);
-        Optional<Basket> basketOptional = basketRepository.findByIdAndUser(basketId,user);
+        Basket basket = findBasketByIdAndUser(email,basketId);
 
-        if (basketOptional.isPresent()) {
-            basketRepository.delete(basketOptional.get());
+        if (basket.getPurchase()==0) {
+            basketRepository.delete(basket);
             return "성공적으로 삭제되었습니다.";
         }else{
             throw new BasketException(BasketExceptionType.NOT_EXIST_BASKET);
@@ -73,6 +72,18 @@ public class BasketServiceImpl implements BasketService {
 
     }
 
+    @Override
+    public Basket findBasketByIdAndUser(String email, Long basketId) {
+        User user = userService.findUserByUserId(email);
+        Optional<Basket> basketOptional = basketRepository.findByIdAndUser(basketId,user);
+
+        if (basketOptional.isPresent()) {
+            Basket basket = basketOptional.get();
+            return basket;
+        }else{
+            throw new BasketException(BasketExceptionType.NOT_EXIST_BASKET);
+        }
+    }
 
 
 }
