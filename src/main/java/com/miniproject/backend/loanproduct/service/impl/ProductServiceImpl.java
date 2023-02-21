@@ -49,13 +49,13 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public PagingDTO searchList(String keyword, Pageable pageable) {
+    public ProductDto.PagingDTO searchList(String keyword, Pageable pageable) {
 
-        List<SearchResponseDto> searchList = new ArrayList<>();
+        List<ProductDto.SearchResponseDto> searchList = new ArrayList<>();
         Page<LoanProduct> products = productRepository.findByProductNmContaining(keyword, pageable);
         int pages = products.getTotalPages();
         for (LoanProduct product : products) {
-            searchList.add(SearchResponseDto.builder()
+            searchList.add(ProductDto.SearchResponseDto.builder()
                     .productId(product.getId())
                     .bankImgPath(product.getBank().getImgPath())
                     .bankName(product.getBank().getBankNm())
@@ -65,7 +65,7 @@ public class ProductServiceImpl implements ProductService {
                     .build());
         }
         if (searchList.size() != 0) {
-            return PagingDTO.builder()
+            return ProductDto.PagingDTO.builder()
                     .num(searchList.size())
                     .searchList(searchList)
                     .current(pageable.getPageNumber())
