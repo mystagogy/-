@@ -69,38 +69,55 @@ public class ProductDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
+    @Setter
     @Schema(name = "검색상품 정보 출력 데이터")
-    public class SearchRequestDto {
+    public static class SearchRequestDto {
 
         private String keyword;
-        private Pageable pageable;
     }
 
-    @AllArgsConstructor
+
     @NoArgsConstructor
     @Getter
+    @Setter
     @Schema(name = "검색상품 정보 출력 데이터")
-    public class SearchResponseDto {
+    public static class SearchResponseDto {
 
-        private String productId;
+        private String Id;
         private String bankImgPath;
         private String bankName;
         private String productName;
         private List<LoanRate> loanRateList;
         private String loanLimit;
 
+        public SearchResponseDto(LoanProduct loanProduct) {
+            this.Id = loanProduct.getId();
+            this.bankImgPath = loanProduct.getBank().getImgPath();
+            this.bankName = loanProduct.getBank().getBankNm();
+            this.productName = loanProduct.getProductNm();
+            this.loanRateList = loanProduct.getLoanRates();
+            this.loanLimit = loanProduct.getLoanLimit();
+        }
     }
 
-    @AllArgsConstructor
+
     @NoArgsConstructor
     @Getter
+    @Setter
     @Schema(name = "페이징 처리 데이터")
-    public class PagingDTO {
+    public static class PagingDTO {
 
         private Integer num;
         private List<ProductDto.SearchResponseDto> searchList = new ArrayList<>();
         private Integer current;
         private Integer total;
+
+        public PagingDTO(Integer num, List<SearchResponseDto> searchList, Integer current, Integer total) {
+            this.num = num;
+            this.searchList = searchList;
+            this.current = current;
+            this.total = total;
+        }
     }
 
 }
