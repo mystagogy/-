@@ -40,7 +40,21 @@ jobs:
 # Gradle build 
     - name: Build with Gradle
       run: ./gradlew clean build
-
+      
+#AWS에서 사용할 properties
+    - name: Make application-aws.properties
+      if: contains(github.ref, 'master')
+      run: |
+          cd ./src/main/resources
+          rm ./application.properties
+          
+          ls -al
+          touch ./application.properties
+          
+          echo "copy properties"
+          echo "${{ secrets.APPLICATIONS_PROPERTIES }}" >> ./application.properties
+      shell: bash
+      
 #디렉토리 생성
     - name: Make Directory
       run: mkdir -p deploy
