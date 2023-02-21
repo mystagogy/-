@@ -7,6 +7,7 @@ import com.miniproject.backend.loanproduct.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +40,8 @@ public class ProductController {
 
     @Operation(summary = "상품검색")
     @GetMapping("/product/search")
-    public ResponseDTO<?> searchProduct(@RequestParam ProductDto.SearchRequestDto requestDto) {
-        ProductDto.PagingDTO pagingDTO = productService.searchList(requestDto.getKeyword(), requestDto.getPageable());
+    public ResponseDTO<?> searchProduct( @PageableDefault(size=5, sort="Id", direction = Sort.Direction.ASC)Pageable pageable, @RequestParam("keyword") ProductDto.SearchRequestDto requestDto) {
+        ProductDto.PagingDTO pagingDTO = productService.searchList(requestDto.getKeyword(), pageable);
         return new ResponseDTO<>().ok(pagingDTO, "상품검색 성공");
 
     }
