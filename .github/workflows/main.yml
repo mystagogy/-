@@ -1,6 +1,5 @@
 name: mini project server CI/CD
 
-
 on:
   push:
     branches: [ dev ]
