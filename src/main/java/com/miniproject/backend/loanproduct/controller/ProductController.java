@@ -1,7 +1,6 @@
 package com.miniproject.backend.loanproduct.controller;
 
 import com.miniproject.backend.global.dto.ResponseDTO;
-import com.miniproject.backend.loanproduct.dto.PagingDTO;
 import com.miniproject.backend.loanproduct.dto.ProductDto;
 import com.miniproject.backend.loanproduct.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
