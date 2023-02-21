@@ -40,7 +40,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build
       
-# AWS에서 사용할 properties
+# AWS에서 사용할 properties 생성
     - name: Make application-aws.properties
       if: contains(github.ref, 'master')
       run: |
