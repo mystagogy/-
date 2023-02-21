@@ -8,7 +8,7 @@ on:
     branches: [ dev ]
 
 env:
-  S3_BUCKET_NAME: miniproject-team1-bucket
+  S3_BUCKET_NAME: miniproject-team1-deploy
 
 jobs:
   build:
@@ -45,7 +45,7 @@ jobs:
       run: cp ./build/libs/*.jar ./deploy
 
     - name: Make zip file
-      run: zip -r ./파일명.zip ./deploy
+      run: zip -r ./team1_backend_server.zip ./deploy
       shell: bash
 
     - name: Configure AWS credentials
@@ -56,7 +56,7 @@ jobs:
         aws-region: ap-northeast-2
 
     - name: Upload to S3
-      run: aws s3 cp --region ap-northeast-2 ./파일명.zip s3://$S3_BUCKET_NAME/
+      run: aws s3 cp --region ap-northeast-2 ./team1_backend_server.zip s3://$S3_BUCKET_NAME/
 
 # Deploy
     - name: Deploy
@@ -65,8 +65,8 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       run:
         aws deploy create-deployment
-        --application-name 어플명
-        --deployment-group-name 코드디플로이그룹명
+        --application-name KDT_mini_project_team1_server
+        --deployment-group-name team1-group
         --file-exists-behavior OVERWRITE
-        --s3-location bucket=S3서비스의버킷명따옴표없이,bundleType=zip,key=파일명.zip
+        --s3-location bucket=miniproject-team1-deploy,bundleType=zip,key=team1_backend_server.zip
         --region ap-northeast-2
