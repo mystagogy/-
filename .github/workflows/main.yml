@@ -72,12 +72,13 @@ jobs:
       run: zip -r ./team1_backend_server.zip ./deploy
       shell: bash
 
+# AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-northeast-2
+        aws-region: KDT_miniproject_team1
 
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./team1_backend_server.zip s3://$S3_BUCKET_NAME/
