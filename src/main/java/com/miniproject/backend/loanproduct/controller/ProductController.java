@@ -38,10 +38,10 @@ public class ProductController {
 
 
     @Operation(summary = "상품검색")
-    @GetMapping("/search")
+    @GetMapping("/product/search")
     public ResponseDTO<?> searchProduct(@RequestParam String keyword, @PageableDefault(size = 8) Pageable pageable) {
         PagingDTO pagingDTO = productService.searchList(keyword, pageable);
-        return new ResponseDTO<>().ok(pagingDTO, "정상 출력");
+        return new ResponseDTO<>().ok(pagingDTO, "상품검색 성공");
 
     }
 
