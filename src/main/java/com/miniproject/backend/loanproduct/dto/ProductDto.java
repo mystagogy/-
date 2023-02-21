@@ -2,11 +2,11 @@ package com.miniproject.backend.loanproduct.dto;
 
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.domain.LoanRate;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
+import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDto {
@@ -63,6 +63,60 @@ public class ProductDto {
             this.disclosureStartDay = loanProduct.getDisclosureStartDay();
             this.disclosureEndDay = loanProduct.getDisclosureEndDay();
             this.loanRateList = loanProduct.getLoanRates();
+        }
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Schema(name = "검색상품 정보 출력 데이터")
+    public static class SearchRequestDto {
+
+        private String keyword;
+    }
+
+
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Schema(name = "검색상품 정보 출력 데이터")
+    public static class SearchResponseDto {
+
+        private String Id;
+        private String bankImgPath;
+        private String bankName;
+        private String productName;
+        private List<LoanRate> loanRateList;
+        private String loanLimit;
+
+        public SearchResponseDto(LoanProduct loanProduct) {
+            this.Id = loanProduct.getId();
+            this.bankImgPath = loanProduct.getBank().getImgPath();
+            this.bankName = loanProduct.getBank().getBankNm();
+            this.productName = loanProduct.getProductNm();
+            this.loanRateList = loanProduct.getLoanRates();
+            this.loanLimit = loanProduct.getLoanLimit();
+        }
+    }
+
+
+    @NoArgsConstructor
+    @Getter
+    @Setter
+    @Schema(name = "페이징 처리 데이터")
+    public static class PagingDTO {
+
+        private Integer num;
+        private List<ProductDto.SearchResponseDto> searchList = new ArrayList<>();
+        private Integer current;
+        private Integer total;
+
+        public PagingDTO(Integer num, List<SearchResponseDto> searchList, Integer current, Integer total) {
+            this.num = num;
+            this.searchList = searchList;
+            this.current = current;
+            this.total = total;
         }
     }
 

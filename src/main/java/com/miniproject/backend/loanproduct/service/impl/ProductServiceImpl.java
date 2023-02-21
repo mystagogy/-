@@ -11,7 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,28 +49,16 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public PagingDTO searchList(String keyword, Pageable pageable) {
+    public ProductDto.PagingDTO searchList(String keyword, Pageable pageable) {
 
-        List<SearchResponseDto> searchList = new ArrayList<>();
+
         Page<LoanProduct> products = productRepository.findByProductNmContaining(keyword, pageable);
         int pages = products.getTotalPages();
-        for (LoanProduct product : products) {
-            searchList.add(SearchResponseDto.builder()
-                    .productId(product.getId())
-                    .bankImgPath(product.getBank().getImgPath())
-                    .bankName(product.getBank().getBankNm())
-                    .productName(product.getProductNm())
-                    .loanRateList(product.getLoanRates())
-                    .loanLimit(product.getLoanLimit())
-                    .build());
-        }
+        List<ProductDto.SearchResponseDto> searchList = products.stream().map(product -> new ProductDto.SearchResponseDto(product)).collect(Collectors.toList());
+
         if (searchList.size() != 0) {
-            return PagingDTO.builder()
-                    .num(searchList.size())
-                    .searchList(searchList)
-                    .current(pageable.getPageNumber())
-                    .total(pages)
-                    .build();
+            return  new ProductDto.PagingDTO(searchList.size(), searchList, pageable.getPageNumber(), pages);
+
         } else {
             throw new ProductException(ProductExceptionType.SEARCH_NOT_EXIST);
         }
