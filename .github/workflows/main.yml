@@ -67,7 +67,7 @@ jobs:
 # Jar파일 복사
     - name: Copy Jar
       run: cp ./build/libs/*.jar ./deploy
-
+# 파일 압축
     - name: Make zip file
       run: zip -r ./team1_backend_server.zip ./deploy
       shell: bash
