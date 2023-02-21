@@ -1,15 +1,15 @@
 package com.miniproject.backend.shoppingbasket.service;
 
 import com.miniproject.backend.shoppingbasket.domain.Basket;
-import com.miniproject.backend.shoppingbasket.dto.BasketResponseDTO;
+import com.miniproject.backend.shoppingbasket.dto.BasketDTO;
 
 import java.util.List;
 
 public interface BasketService {
 
-    List<BasketResponseDTO> selectBasketList(String email);
+    List<BasketDTO.Response> selectBasketList(String email);
 
-    BasketResponseDTO insertBasket(String email, String productId);
+    BasketDTO.Response insertBasket(BasketDTO.Request basketRequestDto);
 
     String deleteBasket(String email,Long basketId);
 

@@ -3,7 +3,7 @@ package com.miniproject.backend.shoppingbasket.service.impl;
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.service.ProductService;
 import com.miniproject.backend.shoppingbasket.domain.Basket;
-import com.miniproject.backend.shoppingbasket.dto.BasketResponseDTO;
+import com.miniproject.backend.shoppingbasket.dto.BasketDTO;
 import com.miniproject.backend.shoppingbasket.exception.BasketException;
 import com.miniproject.backend.shoppingbasket.exception.BasketExceptionType;
 import com.miniproject.backend.shoppingbasket.repository.BasketRepository;
@@ -28,12 +28,12 @@ public class OrderServiceImpl implements OrderService {
 
     private final BasketService basketService;
     @Override
-    public BasketResponseDTO buyCart(String email, String productId) {
-        Basket basket = findBasketByUserAndLoanProduct(email,productId);
+    public BasketDTO.Response buyCart(BasketDTO.Request basketRequestDto) {
+        Basket basket = findBasketByUserAndLoanProduct(basketRequestDto.getUserEmail(),basketRequestDto.getProductId());
         if(basket.getPurchase()==0) {
             Basket basketResult = Basket.builder().id(basket.getId()).user(basket.getUser()).loanProduct(basket.getLoanProduct()).purchase(1).build();
             basketRepository.save(basketResult);
-            return new BasketResponseDTO(basketResult);
+            return new BasketDTO.Response(basketResult);
         }else{
             throw new BasketException(BasketExceptionType.PURCHASE_DONE);
         }
@@ -54,10 +54,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<BasketResponseDTO> selectBuyList(String email) {
+    public List<BasketDTO.Response> selectBuyList(String email) {
         User user = userService.findUserByUserId(email);
-        List<BasketResponseDTO> basketList = basketRepository.findByUser(user).stream().filter(en->en.getPurchase()==1)
-                .map(entity -> new BasketResponseDTO(entity)).collect(Collectors.toList());
+        List<BasketDTO.Response> basketList = basketRepository.findByUser(user).stream().filter(en->en.getPurchase()==1)
+                .map(entity -> new BasketDTO.Response(entity)).collect(Collectors.toList());
 
         return basketList;
     }

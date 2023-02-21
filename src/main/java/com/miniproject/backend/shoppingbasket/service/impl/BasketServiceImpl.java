@@ -1,16 +1,14 @@
 package com.miniproject.backend.shoppingbasket.service.impl;
 
 import com.miniproject.backend.loanproduct.domain.LoanProduct;
-import com.miniproject.backend.loanproduct.repository.ProductRepository;
 import com.miniproject.backend.loanproduct.service.ProductService;
 import com.miniproject.backend.shoppingbasket.domain.Basket;
-import com.miniproject.backend.shoppingbasket.dto.BasketResponseDTO;
+import com.miniproject.backend.shoppingbasket.dto.BasketDTO;
 import com.miniproject.backend.shoppingbasket.exception.BasketException;
 import com.miniproject.backend.shoppingbasket.exception.BasketExceptionType;
 import com.miniproject.backend.shoppingbasket.repository.BasketRepository;
 import com.miniproject.backend.shoppingbasket.service.BasketService;
 import com.miniproject.backend.user.domain.User;
-import com.miniproject.backend.user.repository.UserRepository;
 import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,19 +27,19 @@ public class BasketServiceImpl implements BasketService {
     private final UserService userService;
 
     @Override
-    public List<BasketResponseDTO> selectBasketList(String email) {
+    public List<BasketDTO.Response> selectBasketList(String email) {
         User user = userService.findUserByUserId(email);
-        List<BasketResponseDTO> basketList = basketRepository.findByUser(user).stream().filter(en->en.getPurchase()==0)
-                .map(entity -> new BasketResponseDTO(entity)).collect(Collectors.toList());
+        List<BasketDTO.Response> basketList = basketRepository.findByUser(user).stream().filter(en->en.getPurchase()==0)
+                .map(entity -> new BasketDTO.Response(entity)).collect(Collectors.toList());
 
         return basketList;
 
     }
 
     @Override
-    public BasketResponseDTO insertBasket(String email, String productId) {
-        User user = userService.findUserByUserId(email);
-        LoanProduct loanProduct = productService.findProductByProductId(productId);
+    public BasketDTO.Response insertBasket(BasketDTO.Request basketRequestDto) {
+        User user = userService.findUserByUserId(basketRequestDto.getUserEmail());
+        LoanProduct loanProduct = productService.findProductByProductId(basketRequestDto.getProductId());
 
         if (!basketRepository.existsByUserAndLoanProduct(user,loanProduct)){
             Basket basketResult = Basket.builder()
@@ -50,7 +48,7 @@ public class BasketServiceImpl implements BasketService {
                     .build();
 
             basketRepository.save(basketResult);
-            return new BasketResponseDTO(basketResult);
+            return new BasketDTO.Response(basketResult);
         } else {
             throw new BasketException(BasketExceptionType.EXIST_BASKET);
         }

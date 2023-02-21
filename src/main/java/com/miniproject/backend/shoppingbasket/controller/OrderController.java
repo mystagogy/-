@@ -1,10 +1,12 @@
 package com.miniproject.backend.shoppingbasket.controller;
 
 import com.miniproject.backend.global.dto.ResponseDTO;
-import com.miniproject.backend.shoppingbasket.dto.BasketResponseDTO;
+import com.miniproject.backend.global.jwt.CustomUserDetails;
+import com.miniproject.backend.shoppingbasket.dto.BasketDTO;
 import com.miniproject.backend.shoppingbasket.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +19,23 @@ public class OrderController {
 
     @Operation(summary = "구매 등록")
     @PostMapping("/order")
-    public ResponseDTO<?> buyCart(@RequestParam String email, @RequestParam String productId){
-        BasketResponseDTO basketResponseDTO = orderService.buyCart(email, productId);
+    public ResponseDTO<?> buyCart(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BasketDTO.Request basketRequestDto){
+        basketRequestDto.setUserEmail(userDetails.getEmail());
+        BasketDTO.Response basketResponseDTO = orderService.buyCart(basketRequestDto);
         return new ResponseDTO<>().ok(basketResponseDTO,"성공적으로 구매 완료되었습니다!");
     }
 
     @Operation(summary = "구매 리스트 출력")
     @GetMapping("/order")
-    public ResponseDTO<?> showBuyList(@RequestParam String email){
-        List<BasketResponseDTO> basketResponseDTO = orderService.selectBuyList(email);
+    public ResponseDTO<?> showBuyList(@AuthenticationPrincipal CustomUserDetails userDetails){
+        List<BasketDTO.Response> basketResponseDTO = orderService.selectBuyList(userDetails.getEmail());
         return new ResponseDTO<>().ok(basketResponseDTO,"정상출력 데이터");
     }
 
     @Operation(summary = "구매 삭제")
     @DeleteMapping("/order")
-    public ResponseDTO<?> deleteBuy(@RequestParam String email, @RequestParam Long basketId){
-        String msg = orderService.deleteBuy(email, basketId);
+    public ResponseDTO<?> deleteBuy(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam Long basketId){
+        String msg = orderService.deleteBuy(userDetails.getEmail(), basketId);
         return new ResponseDTO<>().ok(msg,"성공적으로 삭제되었습니다.");
     }
 }
