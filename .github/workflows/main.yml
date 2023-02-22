@@ -2,9 +2,9 @@ name: mini project team1 server CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ dev ]
 
 env:
   S3_BUCKET_NAME: miniproject-team1-deploy
