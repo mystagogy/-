@@ -3,6 +3,7 @@ package com.miniproject.backend.bank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.persister.walking.spi.CollectionDefinition;
 
 import javax.persistence.*;
 
@@ -21,6 +22,6 @@ public class Bank {
     @Column(name = "bank_name")
     private String bankNm;
 
-    @Column(name = "icon_path")
+    @Column(name = "icon_path", columnDefinition = "TEXT")
     private String imgPath;
 }
