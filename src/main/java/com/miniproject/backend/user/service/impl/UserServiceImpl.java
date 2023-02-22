@@ -1,4 +1,4 @@
-package com.miniproject.backend.user.service;
+package com.miniproject.backend.user.service.impl;
 
 
 import com.miniproject.backend.user.domain.User;
@@ -6,6 +6,7 @@ import com.miniproject.backend.user.dto.UserRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
 import com.miniproject.backend.user.repository.UserRepository;
+import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,13 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User signin(UserRequestDTO userRequestDTO) {
+    public User signup(UserRequestDTO userRequestDTO) {
         //이메일 중복 확인
         Optional<User> user = userRepository.findByEmail(userRequestDTO.getEmail());
 
@@ -28,10 +29,22 @@ public class UserServiceImpl implements UserService{
             User newUser = userRequestDTO.toEntity();
             newUser.encodePassword(passwordEncoder);
             return userRepository.save(newUser);
-        } else {
-            throw new UserException(UserExceptionType.DUPLICATION_EMAIL);
         }
 
+        return null;
+
+    }
+
+    /**
+     * 이메일이 DB에 있는지 중복 확인 여부 검사
+     * @param email : 확인할 이메일
+     * @return true : 중복 아님, false : 중복임
+     */
+    @Override
+    public Boolean checkDuplicationEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        return user.isEmpty();
     }
 
     @Override

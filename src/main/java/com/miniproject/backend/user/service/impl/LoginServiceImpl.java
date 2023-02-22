@@ -1,4 +1,4 @@
-package com.miniproject.backend.user.service;
+package com.miniproject.backend.user.service.impl;
 
 import com.miniproject.backend.global.jwt.auth.AuthToken;
 import com.miniproject.backend.user.domain.User;
@@ -6,6 +6,7 @@ import com.miniproject.backend.user.dto.LoginRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
 import com.miniproject.backend.user.repository.UserRepository;
+import com.miniproject.backend.user.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class LoginServiceImpl implements LoginService{
+public class LoginServiceImpl implements LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Override

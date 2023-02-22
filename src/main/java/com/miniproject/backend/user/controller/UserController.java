@@ -3,11 +3,10 @@ package com.miniproject.backend.user.controller;
 import com.miniproject.backend.global.dto.ErrorDTO;
 import com.miniproject.backend.global.dto.ResponseDTO;
 import com.miniproject.backend.global.jwt.CustomUserDetails;
-import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.dto.UserRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
-import com.miniproject.backend.user.service.UserServiceImpl;
+import com.miniproject.backend.user.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -35,14 +34,23 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     })
     @PostMapping("/signUp")
-    public ResponseDTO<?> signin(@RequestBody UserRequestDTO userRequestDTO){
+    public ResponseDTO<?> signup(@RequestBody UserRequestDTO userRequestDTO){
         if(userRequestDTO.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")){
-            userService.signin(userRequestDTO);
+            userService.signup(userRequestDTO);
             return new ResponseDTO<>().ok(true,"회원 생성 성공");
         }else{
             throw new UserException(UserExceptionType.NOT_EMAIL_FORMAT);
         }
 
+    }
+
+    @Operation(summary = "이메일 중복 확인 API", description = "true = 중복아님, false = 중복")
+    @PostMapping("/signUp/email")
+    public ResponseDTO<?> checkEmail(@RequestParam("email") String email){
+        if(userService.checkDuplicationEmail(email)){
+            return new ResponseDTO<>().ok(true,"사용가능한 이메일 입니다.");
+        }else
+            return new ResponseDTO<>(401,false,false,"중복된 이메일 입니다.");
     }
 
     @Operation(summary = "비밀번호 확인 API", description = "POST라서 reqeustBody로 입력 필, 변수 명 pw")
