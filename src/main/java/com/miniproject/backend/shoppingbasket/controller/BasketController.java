@@ -30,8 +30,7 @@ public class BasketController {
     @Operation(summary = "장바구니 등록")
     @PostMapping("/cart")
     public ResponseDTO<?> addBasket(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BasketDTO.Request basketRequestDto){
-        basketRequestDto.setUserEmail(userDetails.getEmail());
-        BasketDTO.Response basketResponseDTO = basketService.insertBasket(basketRequestDto);
+        BasketDTO.Response basketResponseDTO = basketService.insertBasket(userDetails.getEmail(),basketRequestDto);
         return new ResponseDTO<>().ok(basketResponseDTO,"성공적으로 추가되었습니다!");
 
     }

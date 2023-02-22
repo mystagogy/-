@@ -20,8 +20,7 @@ public class OrderController {
     @Operation(summary = "구매 등록")
     @PostMapping("/order")
     public ResponseDTO<?> buyCart(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody BasketDTO.Request basketRequestDto){
-        basketRequestDto.setUserEmail(userDetails.getEmail());
-        BasketDTO.Response basketResponseDTO = orderService.buyCart(basketRequestDto);
+        BasketDTO.buyResponse basketResponseDTO = orderService.buyCart(userDetails.getEmail(), basketRequestDto);
         return new ResponseDTO<>().ok(basketResponseDTO,"성공적으로 구매 완료되었습니다!");
     }
 

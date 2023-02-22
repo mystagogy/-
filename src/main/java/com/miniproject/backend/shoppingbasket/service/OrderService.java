@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    BasketDTO.Response buyCart(BasketDTO.Request basketRequestDto);
+    BasketDTO.buyResponse buyCart(String email, BasketDTO.Request basketRequestDto);
 
     Basket findBasketByUserAndLoanProduct(String email, String productId);
 

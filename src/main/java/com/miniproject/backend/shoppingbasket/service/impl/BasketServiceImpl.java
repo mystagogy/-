@@ -37,8 +37,8 @@ public class BasketServiceImpl implements BasketService {
     }
 
     @Override
-    public BasketDTO.Response insertBasket(BasketDTO.Request basketRequestDto) {
-        User user = userService.findUserByUserId(basketRequestDto.getUserEmail());
+    public BasketDTO.Response insertBasket(String email,BasketDTO.Request basketRequestDto) {
+        User user = userService.findUserByUserId(email);
         LoanProduct loanProduct = productService.findProductByProductId(basketRequestDto.getProductId());
 
         if (!basketRepository.existsByUserAndLoanProduct(user,loanProduct)){
