@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.util.List;
 
 public class LikeDto {
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -32,6 +33,7 @@ public class LikeDto {
     @NoArgsConstructor
     public static class Response{
         private Long likeId;
+        private String productId;
         private String bankImgPath;
         private String bankName;
         private String productName;
@@ -40,6 +42,7 @@ public class LikeDto {
 
         public Response(Like like){
             this.likeId = like.getId();
+            this.productId = like.getLoanProduct().getId();
             this.bankImgPath = like.getLoanProduct().getBank().getImgPath();
             this.bankName = like.getLoanProduct().getBank().getBankNm();
             this.productName = like.getLoanProduct().getProductNm();
