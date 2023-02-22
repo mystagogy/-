@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User signin(UserRequestDTO userRequestDTO) {
+    public User signup(UserRequestDTO userRequestDTO) {
         //이메일 중복 확인
         Optional<User> user = userRepository.findByEmail(userRequestDTO.getEmail());
 
