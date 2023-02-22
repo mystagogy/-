@@ -29,9 +29,9 @@ public class UserServiceImpl implements UserService {
             User newUser = userRequestDTO.toEntity();
             newUser.encodePassword(passwordEncoder);
             return userRepository.save(newUser);
-        } else {
-            throw new UserException(UserExceptionType.DUPLICATION_EMAIL);
         }
+
+        return null;
 
     }
 
