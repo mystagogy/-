@@ -9,7 +9,7 @@ public interface BasketService {
 
     List<BasketDTO.Response> selectBasketList(String email);
 
-    BasketDTO.Response insertBasket(BasketDTO.Request basketRequestDto);
+    BasketDTO.Response insertBasket(String email,BasketDTO.Request basketRequestDto);
 
     String deleteBasket(String email,Long basketId);
 

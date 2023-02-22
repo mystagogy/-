@@ -14,6 +14,9 @@ import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,12 +31,16 @@ public class OrderServiceImpl implements OrderService {
 
     private final BasketService basketService;
     @Override
-    public BasketDTO.Response buyCart(BasketDTO.Request basketRequestDto) {
-        Basket basket = findBasketByUserAndLoanProduct(basketRequestDto.getUserEmail(),basketRequestDto.getProductId());
+    public BasketDTO.buyResponse buyCart(String email, BasketDTO.Request basketRequestDto) {
+        Basket basket = findBasketByUserAndLoanProduct(email,basketRequestDto.getProductId());
         if(basket.getPurchase()==0) {
-            Basket basketResult = Basket.builder().id(basket.getId()).user(basket.getUser()).loanProduct(basket.getLoanProduct()).purchase(1).build();
+            LocalDateTime date = LocalDateTime.now();
+            Basket basketResult = Basket.builder().id(basket.getId()).user(basket.getUser())
+                                                    .loanProduct(basket.getLoanProduct()).purchase(1)
+                                                    .orderId(basket.getId()+basket.getUser().getId()+date.format(DateTimeFormatter.BASIC_ISO_DATE))
+                                                    .date(date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))).build();
             basketRepository.save(basketResult);
-            return new BasketDTO.Response(basketResult);
+            return new BasketDTO.buyResponse(basketResult);
         }else{
             throw new BasketException(BasketExceptionType.PURCHASE_DONE);
         }
