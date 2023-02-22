@@ -10,4 +10,5 @@ public interface UserService {
     User findUserByUserId(String userEmail);
     Boolean updatePassword(String email, String newPassword);
     Boolean matchedPasswords(String email, String password);
+    Boolean checkDuplicationEmail(String email);
 }

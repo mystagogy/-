@@ -35,6 +35,18 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 이메일이 DB에 있는지 중복 확인 여부 검사
+     * @param email : 확인할 이메일
+     * @return true : 중복 아님, false : 중복임
+     */
+    @Override
+    public Boolean checkDuplicationEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+
+        return user.isEmpty();
+    }
+
     @Override
     public Boolean updatePassword(String email, String newPassword) {
         User user = userRepository.findByEmail(email).orElseThrow(

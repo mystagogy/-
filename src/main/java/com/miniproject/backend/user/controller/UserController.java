@@ -44,6 +44,15 @@ public class UserController {
 
     }
 
+    @Operation(summary = "이메일 중복 확인 API", description = "true = 중복아님, false = 중복")
+    @PostMapping("/signUp/email")
+    public ResponseDTO<?> checkEmail(@RequestParam("email") String email){
+        if(userService.checkDuplicationEmail(email)){
+            return new ResponseDTO<>().ok(true,"사용가능한 이메일 입니다.");
+        }else
+            return new ResponseDTO<>(401,false,false,"중복된 이메일 입니다.");
+    }
+
     @Operation(summary = "비밀번호 확인 API", description = "POST라서 reqeustBody로 입력 필, 변수 명 pw")
     @PostMapping("/users/password")
     public ResponseDTO<?> checkPassword(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Map<String, String> requestMap){
