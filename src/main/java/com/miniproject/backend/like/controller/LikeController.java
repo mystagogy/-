@@ -24,7 +24,7 @@ public class LikeController {
     @Operation(summary = "관심상품등록")
     @PostMapping("/like")
     public ResponseDTO<?> insertLike(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody LikeDto.InsertRequest request) {
-        System.out.println(request);
+
         LikeDto.Response likeResponseDto =likeService.addLike(userDetails.getEmail(),request.getProductId());
         return new ResponseDTO<>().ok(likeResponseDto, "성공적으로 추가되었습니다.");
 
