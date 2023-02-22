@@ -34,7 +34,7 @@ public class UserController {
             @ApiResponse(responseCode = "-102", description = "이메일 형식",
                     content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
     })
-    @PostMapping("/signIn")
+    @PostMapping("/signUp")
     public ResponseDTO<?> signin(@RequestBody UserRequestDTO userRequestDTO){
         if(userRequestDTO.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")){
             userService.signin(userRequestDTO);
