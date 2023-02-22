@@ -1,4 +1,4 @@
-package com.miniproject.backend.user.service;
+package com.miniproject.backend.user.service.impl;
 
 
 import com.miniproject.backend.user.domain.User;
@@ -6,6 +6,7 @@ import com.miniproject.backend.user.dto.UserRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
 import com.miniproject.backend.user.repository.UserRepository;
+import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
