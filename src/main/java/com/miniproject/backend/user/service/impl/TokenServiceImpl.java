@@ -35,11 +35,7 @@ public class TokenServiceImpl implements TokenService {
             RefreshToken refreshToken = tokenRepository.findByToken(token);
             email = refreshToken.getEmail();
         }
-        else{
-            throw new UserException(UserExceptionType.NOT_EXIST_REFRESH);
-        }
         User user = userService.findUserByUserId(email);
-        System.out.println(user.getEmail());
         return user;
     }
 
