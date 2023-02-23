@@ -4,9 +4,7 @@ import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.domain.LoanRate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDto {
@@ -18,6 +16,7 @@ public class ProductDto {
     public static class Response {
         private String productId;
         private String productName;
+        private String productType;
         private String bankName;
         private String bankImgPath;
         private String loanLimit;
@@ -26,6 +25,7 @@ public class ProductDto {
         public Response(LoanProduct loanProduct) {
             this.productId = loanProduct.getId();
             this.productName = loanProduct.getProductNm();
+            this.productType = loanProduct.getCategory().getCategoryName();
             this.bankName = loanProduct.getBank().getBankNm();
             this.bankImgPath = loanProduct.getBank().getImgPath();
             this.loanLimit = loanProduct.getLoanLimit();
@@ -84,6 +84,7 @@ public class ProductDto {
     public static class SearchResponseDto {
 
         private String Id;
+        private String productType;
         private String bankImgPath;
         private String bankName;
         private String productName;
@@ -92,6 +93,7 @@ public class ProductDto {
 
         public SearchResponseDto(LoanProduct loanProduct) {
             this.Id = loanProduct.getId();
+            this.productType = loanProduct.getCategory().getCategoryName();
             this.bankImgPath = loanProduct.getBank().getImgPath();
             this.bankName = loanProduct.getBank().getBankNm();
             this.productName = loanProduct.getProductNm();
