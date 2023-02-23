@@ -57,12 +57,11 @@ public class LikeServiceImpl implements LikeService{
     }
 
     @Override
-    public List<LikeDto.Response> deleteLike(String email, long Id) {
+    public void deleteLike(String email, long Id) {
         User user = userService.findUserByUserId(email);
         Like like = likeRepository.findLikeByIdAndUser(Id, user);
         if(like != null){
             likeRepository.delete(like);
-            return selectAllLike(email);
         }else{
             throw new LikeException(LikeExceptionType.NOT_EXIST_LIKE);
         }

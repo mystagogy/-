@@ -11,6 +11,6 @@ public interface LikeService {
 
     List<LikeDto.Response> selectAllLike(String email);
 
-    List<LikeDto.Response> deleteLike(String userEmail, long Id);
+    void deleteLike(String userEmail, long Id);
 
 }
