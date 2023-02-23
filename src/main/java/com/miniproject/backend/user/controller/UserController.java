@@ -27,14 +27,6 @@ public class UserController {
         return new ResponseDTO<>().ok(result, msg);
     }
 
-    @Operation(summary = "비밀번호 변경 API", description = "새로운 비밀번호만 입력, 변수명 newPw")
-    @PutMapping("/users/password")
-    public ResponseDTO<?> changePassword(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Map<String, String> requestMap) {
-        boolean result = userService.updatePassword(userDetails.getUsername(), requestMap.get("newPw"));
-        //TODO: 로그인으로 돌려보내는 로직 추가하기
-        return new ResponseDTO<>().ok(result, "비밀번호 변경 완료");
-    }
-
     @Operation(summary = "회원 탈퇴 API", description = "회원임을 인증 했다고 가정함")
     @DeleteMapping("/users/me")
     public ResponseDTO<?> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
