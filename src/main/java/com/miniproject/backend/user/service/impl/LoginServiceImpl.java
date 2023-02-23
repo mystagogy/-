@@ -1,6 +1,7 @@
 package com.miniproject.backend.user.service.impl;
 
 import com.miniproject.backend.global.jwt.auth.AuthToken;
+import com.miniproject.backend.global.jwt.auth.AuthTokenProvider;
 import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.dto.LoginRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
@@ -28,8 +29,5 @@ public class LoginServiceImpl implements LoginService {
 
     }
 
-    @Override
-    public void updateRefresh(User user, AuthToken rt){
-        user.updateRefreshToken(rt.getToken());
-    }
+
 }

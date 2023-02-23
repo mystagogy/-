@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public interface LoginService {
 
     User login(LoginRequestDTO loginRequestDTO);
-    void updateRefresh(User user, AuthToken rt);
+
 }

@@ -8,7 +8,8 @@ public enum UserExceptionType implements CustomExceptionType {
     ACCOUNT_NOT_MATCH(-103, "이메일 또는 비밀번호가 일치하지 않습니다."),
     ACCOUNT_NOT_EXIST(-401, "사용자정보가 존재하지 않습니다."),
     UNMATCHED_PASSWORD(-105, "비밀번호가 일치하지 않습니다."),
-    PARSING_FAIL(-111,"토큰 파싱에 실패했습니다.");
+    PARSING_FAIL(-111,"토큰 파싱에 실패했습니다."),
+    NOT_EXIST_REFRESH(-112,"refresh token이 존재하지 않습니다");
 
     private int errorCode;
     private String errorMsg;
