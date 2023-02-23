@@ -24,35 +24,6 @@ import java.util.Map;
 public class UserController {
     private final UserServiceImpl userService;
 
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "회원가입 api")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "회원 생성 성공"),
-            @ApiResponse(responseCode = "-101", description = "이메일 중복",
-                    content = @Content(schema = @Schema(implementation = ErrorDTO.class))),
-            @ApiResponse(responseCode = "-102", description = "이메일 형식",
-                    content = @Content(schema = @Schema(implementation = ErrorDTO.class)))
-    })
-    @PostMapping("/signUp")
-    public ResponseDTO<?> signup(@RequestBody UserRequestDTO userRequestDTO){
-        if(userRequestDTO.getEmail().matches("^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$")){
-            userService.signup(userRequestDTO);
-            return new ResponseDTO<>().ok(true,"회원 생성 성공");
-        }else{
-            throw new UserException(UserExceptionType.NOT_EMAIL_FORMAT);
-        }
-
-    }
-
-    @Operation(summary = "이메일 중복 확인 API", description = "true = 중복아님, false = 중복")
-    @PostMapping("/signUp/email")
-    public ResponseDTO<?> checkEmail(@RequestParam("email") String email){
-        if(userService.checkDuplicationEmail(email)){
-            return new ResponseDTO<>().ok(true,"사용가능한 이메일 입니다.");
-        }else
-            return new ResponseDTO<>(401,false,false,"중복된 이메일 입니다.");
-    }
-
     @Operation(summary = "비밀번호 확인 API", description = "POST라서 reqeustBody로 입력 필, 변수 명 pw")
     @PostMapping("/users/password")
     public ResponseDTO<?> checkPassword(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Map<String, String> requestMap){
