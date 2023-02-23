@@ -78,4 +78,14 @@ public class UserServiceImpl implements UserService {
 
         return passwordEncoder.matches(user.getPassword(), password);
     }
+
+    public Boolean deleteUser(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
+        );
+
+        userRepository.deleteById(user.getId());
+
+        return true;
+    }
 }
