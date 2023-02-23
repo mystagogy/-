@@ -46,4 +46,31 @@ public class LoginController {
     }
 
 
+    @PostMapping("/refresh")
+    public ResponseDTO<?> reissue(HttpServletResponse response, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("refresh")){
+                token = cookie.getValue();
+                cookie = new Cookie("refresh", null);
+                cookie.setMaxAge(0);
+
+            }
+        }
+        User user = tokenService.checkValid(token);
+
+        AuthToken authToken = authTokenProvider.issueAccessToken(user);
+        AuthToken refreshToken = authTokenProvider.issueRefreshToken(user);
+
+        Cookie cookie = new Cookie("refresh", refreshToken.getToken());
+        tokenService.createRefreshToken(user,refreshToken.getToken());
+
+        response.addCookie(cookie);
+
+
+        log.info(String.valueOf(authToken.getToken()));
+
+        return null;
+    }
 }
