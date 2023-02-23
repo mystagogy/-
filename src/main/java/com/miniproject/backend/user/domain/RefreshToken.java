@@ -22,7 +22,7 @@ public class RefreshToken {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "token", nullable = false)
+    @Column(name = "token", nullable = false, columnDefinition = "text")
     private String token;
 
 }
