@@ -6,6 +6,7 @@ import com.miniproject.backend.global.jwt.auth.AuthToken;
 import com.miniproject.backend.global.jwt.auth.AuthTokenProvider;
 import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.dto.LoginRequestDTO;
+import com.miniproject.backend.user.dto.LoginResponseDTO;
 import com.miniproject.backend.user.dto.UserRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +46,17 @@ public class LoginController {
 
         AuthToken authToken = getToken(response, user);
 
-        return new ResponseDTO<>().ok(authToken.getToken(), "로그인 성공");
+        LoginResponseDTO loginResponseDTO
+                = LoginResponseDTO.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .brith(user.getBirth())
+                .joinType(user.getJoinType())
+                .accessToken(authToken.getToken())
+                .build();
+
+        return new ResponseDTO<>().ok(loginResponseDTO, "로그인 성공");
     }
 
 
