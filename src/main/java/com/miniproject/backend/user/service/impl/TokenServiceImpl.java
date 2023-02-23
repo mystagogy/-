@@ -50,7 +50,7 @@ public class TokenServiceImpl implements TokenService {
             tokenRepository.delete(refreshToken);
         }
         else{
-            throw new UserException(UserExceptionType.NOT_EXIST_REFRESH);
+            throw new JwtException("유효하지 않은 refresh token 입니다.");
         }
 
     }

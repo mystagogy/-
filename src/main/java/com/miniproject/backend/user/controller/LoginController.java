@@ -90,6 +90,7 @@ public class LoginController {
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("refresh")) {
                 token = cookie.getValue();
+                tokenService.checkValid(token);
                 cookie = new Cookie("refresh", null);
                 cookie.setMaxAge(0);
 
