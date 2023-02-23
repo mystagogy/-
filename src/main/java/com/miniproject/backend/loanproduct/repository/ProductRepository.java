@@ -13,7 +13,7 @@ public interface ProductRepository extends JpaRepository<LoanProduct, Long> {
 
     Optional<LoanProduct> findById(String productId);
 
-    Page<LoanProduct> findByProductNmContaining(String keyword, Pageable pageable);
+    List<LoanProduct> findByProductNmContaining(String keyword);
 
 
 }

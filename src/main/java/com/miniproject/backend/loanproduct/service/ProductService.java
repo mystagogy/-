@@ -17,5 +17,5 @@ public interface ProductService {
 
     ProductDto.DetailResponse findById(String ProductId);
 
-    ProductDto.PagingDTO searchList(String keyword, Pageable pageable);
+    List<ProductDto.SearchResponseDto> searchList(String keyword);
 }
