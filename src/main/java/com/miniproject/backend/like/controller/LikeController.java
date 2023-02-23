@@ -45,8 +45,8 @@ public class LikeController {
     @DeleteMapping("/like")
     public ResponseDTO<?> deleteLike(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody LikeDto.DeleteRequest request){
 
-        List<LikeDto.Response> likeResponseDtoList = likeService.deleteLike(userDetails.getEmail(), request.getId());
-        return new ResponseDTO<>().ok(likeResponseDtoList, "성공적으로 삭제되었습니다.");
+        likeService.deleteLike(userDetails.getEmail(), request.getId());
+        return new ResponseDTO<>().ok(null, "성공적으로 삭제되었습니다.");
     }
 
 }
