@@ -45,9 +45,6 @@ public class User {
     @Column(name = "join_type")
     private int joinType; //가입목적
 
-    @Column(name = "refresh_token")
-    private String refreshToken; //jwt 토큰
-
     @Builder
     public User(String name, String email, String password, String birth, int joinType) {
         this.name = name;
@@ -59,10 +56,6 @@ public class User {
 
     public void encodePassword(PasswordEncoder passwordEncoder){
         password = passwordEncoder.encode(password);
-    }
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
     }
 
     public void updatePassword(PasswordEncoder passwordEncoder, String newPw){
