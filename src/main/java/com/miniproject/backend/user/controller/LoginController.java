@@ -50,16 +50,7 @@ public class LoginController {
 
     @PostMapping("/refresh")
     public ResponseDTO<?> reissue(HttpServletResponse response, HttpServletRequest request){
-        Cookie[] cookies = request.getCookies();
-        String token = "";
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("refresh")){
-                token = cookie.getValue();
-                cookie = new Cookie("refresh", null);
-                cookie.setMaxAge(0);
-
-            }
-        }
+        String token = resetRefreshToken(request);
         User user = tokenService.checkValid(token);
 
         getToken(response, user);
@@ -79,6 +70,20 @@ public class LoginController {
         log.info(String.valueOf(authToken.getToken()));
 
         return authToken;
+    }
+
+    public String resetRefreshToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        String token = "";
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("refresh")) {
+                token = cookie.getValue();
+                cookie = new Cookie("refresh", null);
+                cookie.setMaxAge(0);
+
+            }
+        }
+        return token;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -108,5 +113,13 @@ public class LoginController {
             return new ResponseDTO<>().ok(true,"사용가능한 이메일 입니다.");
         }else
             return new ResponseDTO<>(401,false,false,"중복된 이메일 입니다.");
+    }
+
+    @Operation(summary = "로그아웃 API")
+    @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+    public ResponseDTO<?> logout(HttpServletRequest request) {
+        String token = resetRefreshToken(request);
+        tokenService.delete(token);
+        return new ResponseDTO<>().ok(null, "로그아웃 완료");
     }
 }
