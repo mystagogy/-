@@ -34,6 +34,7 @@ public class LikeDto {
     public static class Response{
         private Long likeId;
         private String productId;
+        private String productType;
         private String bankImgPath;
         private String bankName;
         private String productName;
@@ -43,6 +44,7 @@ public class LikeDto {
         public Response(Like like){
             this.likeId = like.getId();
             this.productId = like.getLoanProduct().getId();
+            this.productType = like.getLoanProduct().getCategory().getCategoryName();
             this.bankImgPath = like.getLoanProduct().getBank().getImgPath();
             this.bankName = like.getLoanProduct().getBank().getBankNm();
             this.productName = like.getLoanProduct().getProductNm();
