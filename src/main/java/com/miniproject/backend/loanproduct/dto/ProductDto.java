@@ -99,25 +99,4 @@ public class ProductDto {
             this.loanLimit = loanProduct.getLoanLimit();
         }
     }
-
-
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    @Schema(name = "페이징 처리 데이터")
-    public static class PagingDTO {
-
-        private Integer num;
-        private List<ProductDto.SearchResponseDto> searchList = new ArrayList<>();
-        private Integer current;
-        private Integer total;
-
-        public PagingDTO(Integer num, List<SearchResponseDto> searchList, Integer current, Integer total) {
-            this.num = num;
-            this.searchList = searchList;
-            this.current = current;
-            this.total = total;
-        }
-    }
-
 }

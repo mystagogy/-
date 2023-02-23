@@ -39,9 +39,9 @@ public class ProductController {
 
     @Operation(summary = "상품검색")
     @GetMapping("/product/search")
-    public ResponseDTO<?> searchProduct( @PageableDefault(size=5, sort="Id", direction = Sort.Direction.ASC)Pageable pageable, @RequestParam("keyword") ProductDto.SearchRequestDto requestDto) {
-        ProductDto.PagingDTO pagingDTO = productService.searchList(requestDto.getKeyword(), pageable);
-        return new ResponseDTO<>().ok(pagingDTO, "상품검색 성공");
+    public ResponseDTO<?> searchProduct(@RequestParam("keyword") ProductDto.SearchRequestDto requestDto) {
+        List<ProductDto.SearchResponseDto> searchList = productService.searchList(requestDto.getKeyword());
+        return new ResponseDTO<>().ok(searchList, "상품검색 성공");
 
     }
 

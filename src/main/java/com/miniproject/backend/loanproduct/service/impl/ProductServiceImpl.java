@@ -49,17 +49,15 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public ProductDto.PagingDTO searchList(String keyword, Pageable pageable) {
+    public List<ProductDto.SearchResponseDto> searchList(String keyword) {
 
 
-        Page<LoanProduct> products = productRepository.findByProductNmContaining(keyword, pageable);
-        int pages = products.getTotalPages();
+        List<LoanProduct> products = productRepository.findByProductNmContaining(keyword);
         List<ProductDto.SearchResponseDto> searchList = products.stream().map(product -> new ProductDto.SearchResponseDto(product)).collect(Collectors.toList());
-
-        if (searchList.size() != 0) {
-            return  new ProductDto.PagingDTO(searchList.size(), searchList, pageable.getPageNumber(), pages);
-
-        } else {
+        if(!(searchList.size() == 0)){
+            return searchList;
+        }
+        else {
             throw new ProductException(ProductExceptionType.SEARCH_NOT_EXIST);
         }
     }
