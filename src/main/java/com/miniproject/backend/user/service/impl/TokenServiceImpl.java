@@ -9,6 +9,7 @@ import com.miniproject.backend.user.repository.TokenRepository;
 import com.miniproject.backend.user.repository.UserRepository;
 import com.miniproject.backend.user.service.TokenService;
 import com.miniproject.backend.user.service.UserService;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +35,12 @@ public class TokenServiceImpl implements TokenService {
         if(tokenRepository.existsByToken(token)){
             RefreshToken refreshToken = tokenRepository.findByToken(token);
             email = refreshToken.getEmail();
+            User user = userService.findUserByUserId(email);
+            return user;
         }
-        User user = userService.findUserByUserId(email);
-        return user;
+        else
+            throw new JwtException("유효하지 않은 refresh token 입니다.");
+
     }
 
     @Override
