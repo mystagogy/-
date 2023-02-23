@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseDTO<>().ok(result, "회원 탈퇴 성공");
     }
 
-    @Operation(summary = "회원 정보 변경 API")
+    @Operation(summary = "회원 정보 변경 API", description = "수정을 안하는 값은 null이나 \"\" 또는 0 으로 주세요.")
     @PutMapping("/users/me")
     public ResponseDTO<?> userUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UserUpdateDTO.update update) {
         boolean result = userService.updateUser(userDetails.getEmail(), update);
