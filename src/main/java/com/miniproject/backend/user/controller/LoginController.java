@@ -32,16 +32,9 @@ public class LoginController {
     public ResponseDTO<?> login(HttpServletResponse response, @RequestBody LoginRequestDTO requestDTO) {
 
         User user = loginService.login(requestDTO);
-        AuthToken authToken = authTokenProvider.issueAccessToken(user);
-        AuthToken refreshToken = authTokenProvider.issueRefreshToken(user);
 
-        Cookie cookie = new Cookie("refresh", refreshToken.getToken());
-        tokenService.createRefreshToken(user,refreshToken.getToken());
+        AuthToken authToken = getToken(response, user);
 
-        response.addCookie(cookie);
-
-
-        log.info(String.valueOf(authToken.getToken()));
         return new ResponseDTO<>().ok(authToken.getToken(), "로그인 성공");
     }
 
@@ -60,6 +53,12 @@ public class LoginController {
         }
         User user = tokenService.checkValid(token);
 
+        getToken(response, user);
+
+        return null;
+    }
+
+    public AuthToken getToken(HttpServletResponse response, User user){
         AuthToken authToken = authTokenProvider.issueAccessToken(user);
         AuthToken refreshToken = authTokenProvider.issueRefreshToken(user);
 
@@ -68,9 +67,8 @@ public class LoginController {
 
         response.addCookie(cookie);
 
-
         log.info(String.valueOf(authToken.getToken()));
 
-        return null;
+        return authToken;
     }
 }
