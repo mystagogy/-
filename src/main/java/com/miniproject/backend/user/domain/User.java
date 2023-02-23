@@ -65,14 +65,22 @@ public class User {
     }
 
     public void updateInfo(String name, String password, String birth, int asset, int income, String job, String region, int joinType) {
-        this.name = name;
-        this.password = password;
-        this.birth = birth;
-        this.asset = asset;
-        this.income = income;
-        this.job = job;
-        this.region = region;
-        this.joinType = joinType;
+        if(name != null && !name.equals(""))
+            this.name = name;
+        if(password != null && !password.equals(""))
+            this.password = password;
+        if(birth != null && !birth.equals(""))
+            this.birth = birth;
+        if(asset != 0)
+            this.asset = asset;
+        if(income != 0)
+            this.income = income;
+        if(job != null && !job.equals(""))
+            this.job = job;
+        if(region != null && !region.equals(""))
+            this.region = region;
+        if(joinType != 0)
+            this.joinType = joinType;
     }
 
 
