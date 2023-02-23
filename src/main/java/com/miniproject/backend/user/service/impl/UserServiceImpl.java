@@ -5,6 +5,7 @@ import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.dto.UserRequestDTO;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
+import com.miniproject.backend.user.repository.TokenRepository;
 import com.miniproject.backend.user.repository.UserRepository;
 import com.miniproject.backend.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -77,5 +79,14 @@ public class UserServiceImpl implements UserService {
         password = passwordEncoder.encode(password);
 
         return passwordEncoder.matches(user.getPassword(), password);
+    }
+
+    public Boolean deleteUser(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
+        );
+        userRepository.deleteById(user.getId());
+        tokenRepository.deleteById(user.getEmail());
+        return true;
     }
 }

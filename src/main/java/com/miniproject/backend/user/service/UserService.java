@@ -11,4 +11,6 @@ public interface UserService {
     Boolean updatePassword(String email, String newPassword);
     Boolean matchedPasswords(String email, String password);
     Boolean checkDuplicationEmail(String email);
+
+    Boolean deleteUser(String email);
 }

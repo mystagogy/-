@@ -42,4 +42,11 @@ public class UserController {
         //TODO: 로그인으로 돌려보내는 로직 추가하기
         return new ResponseDTO<>().ok(result,"비밀번호 변경 완료");
     }
+
+    @Operation(summary = "회원 탈퇴 API", description = "회원임을 인증 했다고 가정함")
+    @DeleteMapping("/users/me")
+    public ResponseDTO<?> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails){
+        boolean result = userService.deleteUser(userDetails.getEmail());
+        return new ResponseDTO<>().ok(result,"회원 탈퇴 성공");
+    }
 }
