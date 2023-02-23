@@ -1,6 +1,5 @@
 package com.miniproject.backend.user.service.impl;
 
-import com.miniproject.backend.global.jwt.auth.AuthToken;
 import com.miniproject.backend.global.jwt.auth.AuthTokenProvider;
 import com.miniproject.backend.user.domain.RefreshToken;
 import com.miniproject.backend.user.domain.User;
@@ -18,9 +17,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TokenServiceImpl implements TokenService {
     private final TokenRepository tokenRepository;
-    private final AuthTokenProvider authTokenProvider;
     private final UserService userService;
-    private final UserRepository userRepository;
+
 
     @Override
     public void createRefreshToken(User user, String token) {
@@ -43,5 +41,17 @@ public class TokenServiceImpl implements TokenService {
         User user = userService.findUserByUserId(email);
         System.out.println(user.getEmail());
         return user;
+    }
+
+    @Override
+    public void delete(String token) {
+        RefreshToken refreshToken = tokenRepository.findByToken(token);
+        if(refreshToken!=null){
+            tokenRepository.delete(refreshToken);
+        }
+        else{
+            throw new UserException(UserExceptionType.NOT_EXIST_REFRESH);
+        }
+
     }
 }
