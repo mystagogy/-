@@ -50,10 +50,8 @@ public class LikeServiceImpl implements LikeService{
         User user = userService.findUserByUserId(email);
         List<Like> likes = likeRepository.findLikesByUser(user);
         List<LikeDto.Response> likeList = likes.stream().map(like -> new LikeDto.Response(like)).collect(Collectors.toList());
-        if(!likeList.isEmpty()) {
-            return likeList;
-        }
-        else throw new LikeException(LikeExceptionType.EMPTY_LIKE_LIST);
+        return likeList;
+
     }
 
     @Override
