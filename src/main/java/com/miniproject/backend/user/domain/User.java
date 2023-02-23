@@ -16,9 +16,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
+@Builder
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
 
@@ -54,11 +56,24 @@ public class User {
         this.joinType = joinType;
     }
 
-    public void encodePassword(PasswordEncoder passwordEncoder){
+    public void encodePassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
     }
 
-    public void updatePassword(PasswordEncoder passwordEncoder, String newPw){
+    public void updatePassword(PasswordEncoder passwordEncoder, String newPw) {
         this.password = passwordEncoder.encode(newPw);
     }
+
+    public void updateInfo(String name, String password, String birth, int asset, int income, String job, String region, int joinType) {
+        this.name = name;
+        this.password = password;
+        this.birth = birth;
+        this.asset = asset;
+        this.income = income;
+        this.job = job;
+        this.region = region;
+        this.joinType = joinType;
+    }
+
+
 }
