@@ -87,9 +87,15 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST));
 
+        String newPw = "";
+
+        if(update.getPassword() != null && !update.getPassword().equals("")){
+            newPw = passwordEncoder.encode(update.getPassword());
+        }
+
         user.updateInfo(
                 update.toEntity().getName(),
-                passwordEncoder.encode(update.toEntity().getPassword()),
+                newPw,
                 update.toEntity().getBirth(),
                 update.toEntity().getAsset(),
                 update.toEntity().getIncome(),
