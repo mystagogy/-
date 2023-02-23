@@ -53,9 +53,9 @@ public class LoginController {
         String token = resetRefreshToken(request);
         User user = tokenService.checkValid(token);
 
-        getToken(response, user);
+        AuthToken authToken = getToken(response, user);
 
-        return null;
+        return new ResponseDTO<>().ok(authToken.getToken(), "refresh 성공");
     }
 
     public AuthToken getToken(HttpServletResponse response, User user){
