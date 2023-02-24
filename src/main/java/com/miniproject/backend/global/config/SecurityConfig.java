@@ -23,7 +23,7 @@ public class SecurityConfig {
 
     private final AuthTokenProvider authTokenProvider;
 
-    String[] permitUrl = {"/oauth2/**", "/", "/login/**", "/signUp/**", "/product", "/refresh", "/swagger-ui/**", "/api-docs/**"};
+    String[] permitUrl = {"/oauth2/**", "/", "/login/**", "/signUp/**", "/product/**", "/refresh", "/swagger-ui/**", "/api-docs/**"};
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
