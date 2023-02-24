@@ -2,7 +2,10 @@ package com.miniproject.backend.user.controller;
 
 import com.miniproject.backend.global.dto.ResponseDTO;
 import com.miniproject.backend.global.jwt.CustomUserDetails;
+import com.miniproject.backend.user.dto.UserDTO;
 import com.miniproject.backend.user.dto.UserUpdateDTO;
+import com.miniproject.backend.user.exception.UserException;
+import com.miniproject.backend.user.exception.UserExceptionType;
 import com.miniproject.backend.user.service.impl.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +42,15 @@ public class UserController {
     public ResponseDTO<?> userUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UserUpdateDTO.update update) {
         boolean result = userService.updateUser(userDetails.getEmail(), update);
         return new ResponseDTO<>().ok(result, "정보 수정 성공");
+    }
+
+    @Operation(summary = "회원 정보 조회 API")
+    @GetMapping("/users/me")
+    public ResponseDTO<?> selectUser(@AuthenticationPrincipal CustomUserDetails userDetails){
+        if(userDetails == null){
+            throw new UserException(UserExceptionType.ACCOUNT_NOT_EXIST);
+        }
+        UserDTO userDTO = userService.selectUser(userDetails.getEmail());
+        return new ResponseDTO<>().ok(userDTO,"회원 데이터 조회 성공");
     }
 }
