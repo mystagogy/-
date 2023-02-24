@@ -25,6 +25,12 @@ public class LikeServiceImpl implements LikeService{
     private final ProductService productService;
 
 
+    /**
+     * 관심상품 등록
+     * @param email : 사용자 이메일
+     * @param productId : 상품 ID
+     * @return : 등록된 상품 정보
+     */
     @Override
     public LikeDto.Response addLike(String email, String productId) {
 
@@ -45,6 +51,11 @@ public class LikeServiceImpl implements LikeService{
         }
     }
 
+    /**
+     * 관심상품리스트 출력
+     * @param email : 사용자 이메일
+     * @return : 등록된 관심상품 리스트
+     */
     @Override
     public List<LikeDto.Response> selectAllLike(String email) {
         User user = userService.findUserByUserId(email);
@@ -54,6 +65,11 @@ public class LikeServiceImpl implements LikeService{
 
     }
 
+    /**
+     * 등록된 관심상품 해제
+     * @param email : 사용자 이메일
+     * @param Id : 관심상품 ID
+     */
     @Override
     public void deleteLike(String email, long Id) {
         User user = userService.findUserByUserId(email);

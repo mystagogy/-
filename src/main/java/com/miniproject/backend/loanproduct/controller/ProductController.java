@@ -36,7 +36,11 @@ public class ProductController {
         return new ResponseDTO<>().ok(productDetail, "정상 출력");
     }
 
-
+    /**
+     * 상품명에서 검색키워드로 상품검색 API
+     * @param requestDto : 검색 키워드
+     * @return : 검색 키워드를 포함하는 상품 리스트
+     */
     @Operation(summary = "상품검색")
     @GetMapping("/product/search")
     public ResponseDTO<?> searchProduct(@RequestParam("keyword") ProductDto.SearchRequestDto requestDto) {

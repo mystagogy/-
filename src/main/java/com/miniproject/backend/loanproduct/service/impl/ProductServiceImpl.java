@@ -31,6 +31,11 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 상품 ID로 상품 찾기
+     * @param productId : 상품 ID
+     * @return 상품 정보
+     */
     @Override
     public LoanProduct findProductByProductId(String productId) {
         Optional<LoanProduct> loanProduct = productRepository.findById(productId);
@@ -48,9 +53,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+    /**
+     * 상품명에서 검색키워드를 포함하는 상품 찾기
+     * @param keyword : 검색 키워드
+     * @return : 검색 키워드를 포함하는 상품 리스트
+     */
     @Override
     public List<ProductDto.SearchResponseDto> searchList(String keyword) {
-
 
         List<LoanProduct> products = productRepository.findByProductNmContaining(keyword);
         List<ProductDto.SearchResponseDto> searchList = products.stream().map(product -> new ProductDto.SearchResponseDto(product)).collect(Collectors.toList());
