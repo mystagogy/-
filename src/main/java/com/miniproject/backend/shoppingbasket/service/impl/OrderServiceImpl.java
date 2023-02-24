@@ -30,6 +30,13 @@ public class OrderServiceImpl implements OrderService {
     private final UserService userService;
 
     private final BasketService basketService;
+
+    /**
+     * 장바구니 상품구매
+     * @param email : 사용자 email
+     * @param basketRequestDto : 상품id를 포함한 DTO
+     * @return 구매정보
+     */
     @Override
     public BasketDTO.buyResponse buyCart(String email, BasketDTO.Request basketRequestDto) {
         Basket basket = findBasketByUserAndLoanProduct(email,basketRequestDto.getProductId());
@@ -46,6 +53,12 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    /**
+     * 사용자정보와 상품정보로 장바구니 찾기
+     * @param email : 사용자 email
+     * @param productId : 상품id
+     * @return 장바구니 정보
+     */
     @Override
     public Basket findBasketByUserAndLoanProduct(String email, String productId) {
         User user = userService.findUserByUserId(email);
@@ -60,6 +73,11 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 구매리스트 출력
+     * @param email : 사용자 email
+     * @return 구매 리스트
+     */
     @Override
     public List<BasketDTO.Response> selectBuyList(String email) {
         User user = userService.findUserByUserId(email);
@@ -69,6 +87,12 @@ public class OrderServiceImpl implements OrderService {
         return basketList;
     }
 
+    /**
+     * 구매정보 삭제
+     * @param email : 사용자 email
+     * @param basketId : 장바구니 id
+     * @return "성공적으로 삭제되었습니다."
+     */
     @Override
     public String deleteBuy(String email, Long basketId) {
 
