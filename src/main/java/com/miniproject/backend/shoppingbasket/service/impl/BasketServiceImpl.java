@@ -26,6 +26,11 @@ public class BasketServiceImpl implements BasketService {
     private final ProductService productService;
     private final UserService userService;
 
+    /**
+     * 장바구니 리스트 출력
+     * @param email : 사용자 email
+     * @return 등록된 장바구니 리스트
+     */
     @Override
     public List<BasketDTO.Response> selectBasketList(String email) {
         User user = userService.findUserByUserId(email);
@@ -36,6 +41,12 @@ public class BasketServiceImpl implements BasketService {
 
     }
 
+    /**
+     * 장바구니 등록
+     * @param email : 사용자 email
+     * @param basketRequestDto : 상품id를 포함한 DTO
+     * @return 등록 장바구니 정보
+     */
     @Override
     public BasketDTO.Response insertBasket(String email,BasketDTO.Request basketRequestDto) {
         User user = userService.findUserByUserId(email);
@@ -54,6 +65,12 @@ public class BasketServiceImpl implements BasketService {
         }
     }
 
+    /**
+     * 장바구니 삭제
+     * @param email : 사용자 email
+     * @param basketId : 삭제할 장바구니 id
+     * @return "성공적으로 삭제되었습니다."
+     */
     @Transactional
     @Override
     public String deleteBasket(String email, Long basketId) {
@@ -70,6 +87,12 @@ public class BasketServiceImpl implements BasketService {
 
     }
 
+    /**
+     * 장바구니id와 사용자정보로 장바구니 찾기
+     * @param email : 사용자 email
+     * @param basketId : 장바구니 id
+     * @return 장바구니 정보
+     */
     @Override
     public Basket findBasketByIdAndUser(String email, Long basketId) {
         User user = userService.findUserByUserId(email);
