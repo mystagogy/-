@@ -2,19 +2,23 @@ package com.miniproject.backend.global.jwt.auth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.miniproject.backend.global.exception.GlobalException;
+import com.miniproject.backend.global.exception.GlobalExceptionType;
 import com.miniproject.backend.global.jwt.CustomUserDetails;
 import com.miniproject.backend.global.jwt.JwtConfig;
 import com.miniproject.backend.global.jwt.JwtType;
 import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
@@ -91,5 +95,38 @@ public class AuthTokenProvider {
             return null;
         }
     }
+
+    /**
+     * refresh token 유효성 검사
+     * @param token : refresh token
+     * @return 유효하면 true, 그 외엔 오류코드 전송
+     */
+    public boolean validateToken(String token, HttpServletResponse response) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (SecurityException e) {
+            log.info("Invalid JWT signature.");
+            response.setStatus(GlobalExceptionType.BAD_REQUEST.getErrorCode());
+            throw new GlobalException(GlobalExceptionType.BAD_REQUEST);
+        } catch (MalformedJwtException e) {
+            log.info("Invalid JWT token.");
+            response.setStatus(GlobalExceptionType.BAD_REQUEST.getErrorCode());
+            throw new GlobalException(GlobalExceptionType.BAD_REQUEST);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT token.");
+            response.setStatus(GlobalExceptionType.UNAUTHORIZED.getErrorCode());
+            throw new GlobalException(GlobalExceptionType.UNAUTHORIZED);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT token.");
+            response.setStatus(GlobalExceptionType.JWT_NOT_ALLOWED.getErrorCode());
+            throw new GlobalException(GlobalExceptionType.JWT_NOT_ALLOWED);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT token compact of handler are invalid.");
+            response.setStatus(GlobalExceptionType.UNAUTHORIZED.getErrorCode());
+            throw new GlobalException(GlobalExceptionType.UNAUTHORIZED);
+        }
+    }
+
 
 }

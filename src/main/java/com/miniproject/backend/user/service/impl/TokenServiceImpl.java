@@ -1,17 +1,20 @@
 package com.miniproject.backend.user.service.impl;
 
+import com.miniproject.backend.global.exception.GlobalException;
+import com.miniproject.backend.global.exception.GlobalExceptionType;
+
 import com.miniproject.backend.global.jwt.auth.AuthTokenProvider;
 import com.miniproject.backend.user.domain.RefreshToken;
 import com.miniproject.backend.user.domain.User;
 import com.miniproject.backend.user.exception.UserException;
 import com.miniproject.backend.user.exception.UserExceptionType;
 import com.miniproject.backend.user.repository.TokenRepository;
-import com.miniproject.backend.user.repository.UserRepository;
 import com.miniproject.backend.user.service.TokenService;
 import com.miniproject.backend.user.service.UserService;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 @Service
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 public class TokenServiceImpl implements TokenService {
     private final TokenRepository tokenRepository;
     private final UserService userService;
+    private final AuthTokenProvider authTokenProvider;
 
     /**
      * refresh token 저장
@@ -39,9 +43,9 @@ public class TokenServiceImpl implements TokenService {
      * @return : 사용자 정보
      */
     @Override
-    public User checkValid(String token) {
+    public User checkValid(String token, HttpServletResponse response) {
         String email = "";
-
+        authTokenProvider.validateToken(token, response);
         if(tokenRepository.existsByToken(token)){
             RefreshToken refreshToken = tokenRepository.findByToken(token);
             email = refreshToken.getEmail();
@@ -49,9 +53,8 @@ public class TokenServiceImpl implements TokenService {
             return user;
         }
         else {
-            throw new UserException(UserExceptionType.ACCESS_TOKEN_UN_AUTHORIZED);
+            throw new GlobalException(GlobalExceptionType.UNAUTHORIZED);
         }
-
     }
 
     /**
