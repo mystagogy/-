@@ -21,7 +21,11 @@ public class ProductController {
 
     private final ProductService productService;
 
-    @Operation(summary = "상품 리스트 api")
+    /**
+     * 상품 목록 조회 API
+     * @return : 상품 전체 목록
+     */
+    @Operation(summary = "상품 목록 조회 api")
     @GetMapping("/product")
 
     public ResponseDTO<?> ProductList() {
@@ -29,7 +33,12 @@ public class ProductController {
         return new ResponseDTO<>().ok(productListDTO, "정상 출력");
     }
 
-    @Operation(summary = "상품 상세정보 ")
+    /**
+     * 상품 상세 정보 조회 API
+     * @param productId : 상품 id
+     * @return : 상품 id를 포함한 상품 상세 정보 + "정상 출력"
+     */
+    @Operation(summary = "상품 상세 정보 조회")
     @GetMapping("/product/{id}")
     public ResponseDTO<?> ProductDetail(@PathVariable("id") String productId) {
         ProductDto.DetailResponse productDetail = productService.findById(productId);
