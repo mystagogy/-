@@ -2,6 +2,7 @@ package com.miniproject.backend.user.service.impl;
 
 
 import com.miniproject.backend.user.domain.User;
+import com.miniproject.backend.user.dto.UserDTO;
 import com.miniproject.backend.user.dto.UserRequestDTO;
 import com.miniproject.backend.user.dto.UserUpdateDTO;
 import com.miniproject.backend.user.exception.UserException;
@@ -107,5 +108,24 @@ public class UserServiceImpl implements UserService {
 
         return true;
 
+    }
+
+    @Override
+    public UserDTO selectUser(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
+        );
+
+        return UserDTO.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .birth(user.getBirth())
+                .asset(user.getAsset())
+                .income(user.getIncome())
+                .job(user.getJob())
+                .region(user.getRegion())
+                .joinType(user.getJoinType())
+                .build();
     }
 }
