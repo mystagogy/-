@@ -73,7 +73,7 @@ public class LoginController {
     @PostMapping("/refresh")
     public ResponseDTO<?> reissue(HttpServletResponse response, HttpServletRequest request){
         String token = findRefreshToken(request);
-        User user = tokenService.checkValid(token);
+        User user = tokenService.checkValid(token, response);
 
         AuthToken authToken = getToken(response, user);
 
