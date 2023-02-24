@@ -40,6 +40,7 @@ public class ProductDto {
         private String productId;
         private String categoryName;
         private String bankName;
+        private String bankImg;
         private String productName;
         private String joinWay;
         private String loanIncidentalExpenses;
@@ -54,6 +55,7 @@ public class ProductDto {
             this.productId = loanProduct.getId();
             this.categoryName = loanProduct.getCategory().getCategoryName();
             this.bankName = loanProduct.getBank().getBankNm();
+            this.bankImg = loanProduct.getBank().getImgPath();
             this.productName = loanProduct.getProductNm();
             this.joinWay = loanProduct.getJoinWay();
             this.loanIncidentalExpenses = loanProduct.getLoanIncidentalExpenses();
