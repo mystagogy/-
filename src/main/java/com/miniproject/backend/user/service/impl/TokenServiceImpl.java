@@ -32,14 +32,16 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public User checkValid(String token) {
         String email = "";
+
         if(tokenRepository.existsByToken(token)){
             RefreshToken refreshToken = tokenRepository.findByToken(token);
             email = refreshToken.getEmail();
             User user = userService.findUserByUserId(email);
             return user;
         }
-        else
-            throw new JwtException("유효하지 않은 refresh token 입니다.");
+        else {
+            throw new UserException(UserExceptionType.ACCESS_TOKEN_UN_AUTHORIZED);
+        }
 
     }
 
