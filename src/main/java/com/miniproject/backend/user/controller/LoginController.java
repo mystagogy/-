@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -62,7 +61,7 @@ public class LoginController {
 
     @PostMapping("/refresh")
     public ResponseDTO<?> reissue(HttpServletResponse response, HttpServletRequest request){
-        String token = resetRefreshToken(request);
+        String token = findRefreshToken(request);
         User user = tokenService.checkValid(token);
 
         AuthToken authToken = getToken(response, user);
@@ -84,16 +83,12 @@ public class LoginController {
         return authToken;
     }
 
-    public String resetRefreshToken(HttpServletRequest request) {
+    public String findRefreshToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String token = "";
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("refresh")) {
                 token = cookie.getValue();
-                tokenService.checkValid(token);
-                cookie = new Cookie("refresh", null);
-                cookie.setMaxAge(0);
-
             }
         }
         return token;
@@ -130,9 +125,20 @@ public class LoginController {
 
     @Operation(summary = "로그아웃 API")
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
-    public ResponseDTO<?> logout(HttpServletRequest request) {
-        String token = resetRefreshToken(request);
+    public ResponseDTO<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        String token = findRefreshToken(request);
         tokenService.delete(token);
+        deleteCookie(request,response);
         return new ResponseDTO<>().ok(null, "로그아웃 완료");
+    }
+
+    public void deleteCookie(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                cookies[i].setMaxAge(0);
+                response.addCookie(cookies[i]);
+            }
+        }
     }
 }
