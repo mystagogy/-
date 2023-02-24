@@ -19,6 +19,12 @@ import java.util.Optional;
 public class LoginServiceImpl implements LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    /**
+     * 로그인 함수
+     * @param loginRequestDTO : 이메일, 비밀번호 받는 DTO
+     * @return User entity 반환 , 실패시 예외 처리
+     */
     @Override
     public User login(LoginRequestDTO loginRequestDTO) {
         User user = userRepository.findByEmail(loginRequestDTO.getEmail())

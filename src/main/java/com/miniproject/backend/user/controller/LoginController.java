@@ -38,6 +38,12 @@ public class LoginController {
     private final TokenService tokenService;
     private final UserServiceImpl userService;
 
+    /**
+     * 로그인 기능
+     * @param response :
+     * @param requestDTO :
+     * @return : 로그인 성공시 ture
+     */
     @PostMapping("/login")
     public ResponseDTO<?> login(HttpServletResponse response, @RequestBody LoginRequestDTO requestDTO) {
 
@@ -110,6 +116,11 @@ public class LoginController {
         return token;
     }
 
+    /**
+     * 회원가입 api
+     * @param userRequestDTO : 회원 가입에 필요한 데이터 DTO
+     * @return 성공하면 true
+     */
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "회원가입 api")
     @ApiResponses({
@@ -130,6 +141,11 @@ public class LoginController {
 
     }
 
+    /**
+     * 이메일 중복 확인하는 api
+     * @param email : 중복 확인할 email
+     * @return 중복 아니면 true, 중복이면 false
+     */
     @Operation(summary = "이메일 중복 확인 API", description = "true = 중복아님, false = 중복")
     @PostMapping("/signUp/email")
     public ResponseDTO<?> checkEmail(@RequestParam("email") String email){
