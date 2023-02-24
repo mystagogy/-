@@ -19,6 +19,12 @@ import java.util.Map;
 public class UserController {
     private final UserServiceImpl userService;
 
+    /**
+     * 현재 비밀번호가 DB에 있는 비밀번호와 같은지 확인하는 api
+     * @param userDetails : 토큰 값
+     * @param requestMap : 현재 비밀번호
+     * @return 성공하면 true
+     */
     @Operation(summary = "비밀번호 확인 API", description = "POST라서 reqeustBody로 입력 필, 변수 명 pw")
     @PostMapping("/users/password")
     public ResponseDTO<?> checkPassword(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Map<String, String> requestMap) {
@@ -30,6 +36,11 @@ public class UserController {
         return new ResponseDTO<>().ok(result, msg);
     }
 
+    /**
+     * 회원 탈퇴 api
+     * @param userDetails : 토큰 값
+     * @return 탈퇴 성공시 true
+     */
     @Operation(summary = "회원 탈퇴 API", description = "회원임을 인증 했다고 가정함")
     @DeleteMapping("/users/me")
     public ResponseDTO<?> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -50,6 +61,11 @@ public class UserController {
         return new ResponseDTO<>().ok(result, "정보 수정 성공");
     }
 
+    /**
+     * 회원 정보 상세 조회
+     * @param userDetails : 토큰 값
+     * @return UserDTO 반환
+     */
     @Operation(summary = "회원 정보 조회 API")
     @GetMapping("/users/me")
     public ResponseDTO<?> selectUser(@AuthenticationPrincipal CustomUserDetails userDetails){

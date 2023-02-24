@@ -22,6 +22,7 @@ public class ResponseDTO<T> {
         this.message = msg;
     }
 
+    // response 성공시
     public ResponseDTO<T> ok(T data, String msg) {
         return new ResponseDTO<>(200, true, data, msg);
     }

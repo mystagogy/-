@@ -25,19 +25,21 @@ public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * 회원가입 하는 함수
+     * @param userRequestDTO : 회원가입시 필요한 데이터 DTO
+     * @return 성공시 user entity 반환, 실패시 null
+     */
     @Override
     public User signup(UserRequestDTO userRequestDTO) {
         //이메일 중복 확인
-        Optional<User> user = userRepository.findByEmail(userRequestDTO.getEmail());
+        User user = userRepository.findByEmail(userRequestDTO.getEmail()).orElseThrow(
+                () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
+                );
 
-        if (user.isEmpty()) {
-            User newUser = userRequestDTO.toEntity();
-            newUser.encodePassword(passwordEncoder);
-            return userRepository.save(newUser);
-        }
-
-        return null;
-
+        User newUser = userRequestDTO.toEntity();
+        newUser.encodePassword(passwordEncoder);
+        return userRepository.save(newUser);
     }
 
     /**
@@ -67,6 +69,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * 비밀번호 확인 함수
+     * @param email : 누구의 비밀번호 인지
+     * @param password : 어떤 비밀번호를 비교할건지
+     * @return 성공시 true 실패시 false
+     */
     @Override
     public Boolean matchedPasswords(String email, String password) {
         User user = userRepository.findByEmail(email).orElseThrow(
@@ -78,6 +86,11 @@ public class UserServiceImpl implements UserService {
         return passwordEncoder.matches(user.getPassword(), password);
     }
 
+    /**
+     * 사용자 삭제
+     * @param email : 누구를 삭제할건지
+     * @return 성공시 true 실패시 예외처리
+     */
     public Boolean deleteUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
@@ -121,6 +134,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /**
+     * 사용자 상세 조회
+     * @param email : 누구를 조회할 건지
+     * @return UserDTO 반환
+     */
     @Override
     public UserDTO selectUser(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(

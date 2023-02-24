@@ -23,6 +23,7 @@ public class SecurityConfig {
 
     private final AuthTokenProvider authTokenProvider;
 
+    // jwt 토큰을 사용하지 않는 URL
     String[] permitUrl = {"/oauth2/**", "/", "/login/**", "/signUp/**", "/product/**", "/refresh", "/swagger-ui/**", "/api-docs/**"};
 
     @Bean
@@ -30,7 +31,7 @@ public class SecurityConfig {
         http
                 .cors()//기본 cors 설정
                 .and()
-                .csrf().disable()
+                .csrf().disable() //위조요청 방지 비활성화
                 .formLogin().disable() //formLogin 인증 비활성화
                 .httpBasic().disable() //httpBasic 인증 비활성화
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
