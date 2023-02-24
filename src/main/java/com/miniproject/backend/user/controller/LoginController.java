@@ -58,7 +58,12 @@ public class LoginController {
         return new ResponseDTO<>().ok(loginResponseDTO, "로그인 성공");
     }
 
-
+    /**
+     * access token 만료 시 refresh token으로 재발행하는 api
+     * @param response : 쿠키 값 저장을 위한 응답값
+     * @param request : 쿠키 값 확인을 위한 요청 값
+     * @return : 새로 발급된 access token 반환
+     */
     @PostMapping("/refresh")
     public ResponseDTO<?> reissue(HttpServletResponse response, HttpServletRequest request){
         String token = findRefreshToken(request);
@@ -69,6 +74,12 @@ public class LoginController {
         return new ResponseDTO<>().ok(authToken.getToken(), "refresh 성공");
     }
 
+    /**
+     * 사용자 정보로 access token과 refresh token 발급 및 쿠키 설정 함수
+     * @param response : refresh token을 쿠키에 저장하기 위한 응답값
+     * @param user : 토큰 생성을 위한 유저 정보
+     * @return access token을 가지고 있는 인증 토큰 객체
+     */
     public AuthToken getToken(HttpServletResponse response, User user){
         AuthToken authToken = authTokenProvider.issueAccessToken(user);
         AuthToken refreshToken = authTokenProvider.issueRefreshToken(user);
@@ -83,6 +94,11 @@ public class LoginController {
         return authToken;
     }
 
+    /**
+     * 쿠키에 저장된 refresh token 값 찾는 함수
+     * @param request : 쿠키 값을 받기 위한 요청 값
+     * @return refresh token 값
+     */
     public String findRefreshToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String token = "";
@@ -123,15 +139,26 @@ public class LoginController {
             return new ResponseDTO<>(401,false,false,"중복된 이메일 입니다.");
     }
 
+    /**
+     * refresh token을 제거하고 로그아웃하는 api
+     * @param request : 쿠키 값 받아오기 위한 요청 값
+     * @param response : 만료시킨 쿠키를 가지고 있는 응답 값
+     * @return 로그아웃 완료 메세지
+     */
     @Operation(summary = "로그아웃 API")
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public ResponseDTO<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        String token = findRefreshToken(request);
-        tokenService.delete(token);
+
+        tokenService.delete(findRefreshToken(request));
         deleteCookie(request,response);
         return new ResponseDTO<>().ok(null, "로그아웃 완료");
     }
 
+    /**
+     * 쿠키에 저장된 값 모두 만료하는 함수
+     * @param request : 쿠키 값 받아오기 위한 요청 값
+     * @param response : 만료시킨 쿠키를 가지고 있는 응답 값
+     */
     public void deleteCookie(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
         if(cookies != null) {

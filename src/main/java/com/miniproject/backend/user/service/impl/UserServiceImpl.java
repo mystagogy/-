@@ -52,6 +52,11 @@ public class UserServiceImpl implements UserService {
         return user.isEmpty();
     }
 
+    /**
+     * 이메일로 사용자 찾기
+     * @param userEmail : 사용자 이메일
+     * @return : 사용자 정보
+     */
     @Override
     public User findUserByUserId(String userEmail) {
         Optional<User> user = userRepository.findByEmail(userEmail);

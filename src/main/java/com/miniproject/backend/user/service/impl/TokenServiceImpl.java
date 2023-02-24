@@ -20,7 +20,11 @@ public class TokenServiceImpl implements TokenService {
     private final TokenRepository tokenRepository;
     private final UserService userService;
 
-
+    /**
+     * refresh token 저장
+     * @param user : 사용자 정보
+     * @param token : refresh token 값
+     */
     @Override
     public void createRefreshToken(User user, String token) {
 
@@ -29,6 +33,11 @@ public class TokenServiceImpl implements TokenService {
 
     }
 
+    /**
+     * refresh token으로 사용자 정보 찾기
+     * @param token : refresh token
+     * @return : 사용자 정보
+     */
     @Override
     public User checkValid(String token) {
         String email = "";
@@ -45,6 +54,10 @@ public class TokenServiceImpl implements TokenService {
 
     }
 
+    /**
+     * 로그아웃 시 refresh token 테이블에 저장된 토큰 값 삭제
+     * @param token : refresh token
+     */
     @Override
     public void delete(String token) {
         RefreshToken refreshToken = tokenRepository.findByToken(token);
@@ -52,7 +65,7 @@ public class TokenServiceImpl implements TokenService {
             tokenRepository.delete(refreshToken);
         }
         else{
-            throw new JwtException("유효하지 않은 refresh token 입니다.");
+            throw new UserException(UserExceptionType.ACCESS_TOKEN_UN_AUTHORIZED);
         }
 
     }
