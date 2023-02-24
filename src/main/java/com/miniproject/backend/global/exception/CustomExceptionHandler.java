@@ -46,4 +46,13 @@ public class CustomExceptionHandler implements ErrorController {
                 .build();
     }
 
+    @ExceptionHandler(value = GlobalException.class)
+    public ErrorDTO handleGlobalException(CustomException ce){
+        return ErrorDTO.builder()
+                .errorCode(ce.getExceptionType().getErrorCode())
+
+                .errorMessage(ce.getExceptionType().getMessage())
+                .build();
+    }
+
 }
