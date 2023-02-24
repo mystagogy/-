@@ -17,7 +17,6 @@ public class BasketDTO {
     @Schema(name = "장바구니 입력 요청 데이터")
     public static class Request {
 
-        private String userEmail;
         private String productId;
     }
 
@@ -32,6 +31,9 @@ public class BasketDTO {
 
         @Schema(name = "상품 id")
         private String productId;
+
+        @Schema(name = "상품 종류")
+        private String productType;
 
         @Schema(name = "은행이름")
         private String bankName;
@@ -51,12 +53,26 @@ public class BasketDTO {
         public Response(Basket basket){
             this.cartId = basket.getId();
             this.productId = basket.getLoanProduct().getId();
+            this.productType = basket.getLoanProduct().getCategory().getCategoryName();
             this.bankName = basket.getLoanProduct().getBank().getBankNm();
             this.bankImgPath = basket.getLoanProduct().getBank().getImgPath();
             this.productName = basket.getLoanProduct().getProductNm();
             this.loanLimit = basket.getLoanProduct().getLoanLimit();
             this.loanRateList = basket.getLoanProduct().getLoanRates();
 
+        }
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class buyResponse{
+        private String orderId;
+        private String date;
+
+        public buyResponse(Basket basket){
+            this.orderId = basket.getOrderId();
+            this.date = basket.getDate();
         }
     }
 }

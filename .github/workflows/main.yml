@@ -2,9 +2,9 @@ name: mini project team1 server CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ dev ]
 
 env:
   S3_BUCKET_NAME: miniproject-team1-deploy
@@ -51,7 +51,7 @@ jobs:
 #           touch ./application.properties
           
 #           echo "copy properties"
-#           echo "${{ secrets.APPLICATIONS_PROPERTIES }}" >> ./application-aws.properties
+#           echo "${{ secrets.APPLICATION_PROPERTIES }}" >> ./application-aws.properties
 #       shell: bash
       
 #디렉토리 생성
@@ -83,7 +83,7 @@ jobs:
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./team1_backend_server.zip s3://$S3_BUCKET_NAME/
 
-# Deploy
+# Deploy 
     - name: Deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

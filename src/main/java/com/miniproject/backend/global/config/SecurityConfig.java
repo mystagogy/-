@@ -1,9 +1,9 @@
 package com.miniproject.backend.global.config;
 
 import com.miniproject.backend.global.jwt.JwtAuthorizationFilter;
+import com.miniproject.backend.global.jwt.JwtExceptionEntryPoint;
 import com.miniproject.backend.global.jwt.auth.AuthTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,23 +23,32 @@ public class SecurityConfig {
 
     private final AuthTokenProvider authTokenProvider;
 
+    // jwt 토큰을 사용하지 않는 URL
+    String[] permitUrl = {"/oauth2/**", "/", "/login/**", "/signUp/**", "/product/**", "/refresh", "/swagger-ui/**", "/api-docs/**"};
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .cors()//기본 cors 설정
                 .and()
-                .csrf().disable()
+                .csrf().disable() //위조요청 방지 비활성화
                 .formLogin().disable() //formLogin 인증 비활성화
                 .httpBasic().disable() //httpBasic 인증 비활성화
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers(
-                        "/oauth2/**", "/", "/login/**", "/signIn", "/refresh", "/swagger-ui/**", "/api-docs/**")
+                .authorizeRequests().antMatchers(permitUrl)
                 .permitAll()
                 .anyRequest().authenticated();
 
         http
                 .apply(new customConfig());
+
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(new JwtExceptionEntryPoint()); //예외처리
+
+        http
+                .logout();
 
         return http.build();
     }

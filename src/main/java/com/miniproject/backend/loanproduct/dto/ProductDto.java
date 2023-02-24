@@ -4,9 +4,7 @@ import com.miniproject.backend.loanproduct.domain.LoanProduct;
 import com.miniproject.backend.loanproduct.domain.LoanRate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDto {
@@ -18,6 +16,7 @@ public class ProductDto {
     public static class Response {
         private String productId;
         private String productName;
+        private String productType;
         private String bankName;
         private String bankImgPath;
         private String loanLimit;
@@ -26,6 +25,7 @@ public class ProductDto {
         public Response(LoanProduct loanProduct) {
             this.productId = loanProduct.getId();
             this.productName = loanProduct.getProductNm();
+            this.productType = loanProduct.getCategory().getCategoryName();
             this.bankName = loanProduct.getBank().getBankNm();
             this.bankImgPath = loanProduct.getBank().getImgPath();
             this.loanLimit = loanProduct.getLoanLimit();
@@ -40,6 +40,7 @@ public class ProductDto {
         private String productId;
         private String categoryName;
         private String bankName;
+        private String bankImg;
         private String productName;
         private String joinWay;
         private String loanIncidentalExpenses;
@@ -54,6 +55,7 @@ public class ProductDto {
             this.productId = loanProduct.getId();
             this.categoryName = loanProduct.getCategory().getCategoryName();
             this.bankName = loanProduct.getBank().getBankNm();
+            this.bankImg = loanProduct.getBank().getImgPath();
             this.productName = loanProduct.getProductNm();
             this.joinWay = loanProduct.getJoinWay();
             this.loanIncidentalExpenses = loanProduct.getLoanIncidentalExpenses();
@@ -84,6 +86,7 @@ public class ProductDto {
     public static class SearchResponseDto {
 
         private String Id;
+        private String productType;
         private String bankImgPath;
         private String bankName;
         private String productName;
@@ -92,6 +95,7 @@ public class ProductDto {
 
         public SearchResponseDto(LoanProduct loanProduct) {
             this.Id = loanProduct.getId();
+            this.productType = loanProduct.getCategory().getCategoryName();
             this.bankImgPath = loanProduct.getBank().getImgPath();
             this.bankName = loanProduct.getBank().getBankNm();
             this.productName = loanProduct.getProductNm();
@@ -99,25 +103,4 @@ public class ProductDto {
             this.loanLimit = loanProduct.getLoanLimit();
         }
     }
-
-
-    @NoArgsConstructor
-    @Getter
-    @Setter
-    @Schema(name = "페이징 처리 데이터")
-    public static class PagingDTO {
-
-        private Integer num;
-        private List<ProductDto.SearchResponseDto> searchList = new ArrayList<>();
-        private Integer current;
-        private Integer total;
-
-        public PagingDTO(Integer num, List<SearchResponseDto> searchList, Integer current, Integer total) {
-            this.num = num;
-            this.searchList = searchList;
-            this.current = current;
-            this.total = total;
-        }
-    }
-
 }

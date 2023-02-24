@@ -16,9 +16,11 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
+@Builder
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     private Long id;
 
@@ -45,9 +47,6 @@ public class User {
     @Column(name = "join_type")
     private int joinType; //가입목적
 
-    @Column(name = "refresh_token")
-    private String refreshToken; //jwt 토큰
-
     @Builder
     public User(String name, String email, String password, String birth, int joinType) {
         this.name = name;
@@ -57,15 +56,32 @@ public class User {
         this.joinType = joinType;
     }
 
-    public void encodePassword(PasswordEncoder passwordEncoder){
+    public void encodePassword(PasswordEncoder passwordEncoder) {
         password = passwordEncoder.encode(password);
     }
 
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken = refreshToken;
-    }
-
-    public void updatePassword(PasswordEncoder passwordEncoder, String newPw){
+    public void updatePassword(PasswordEncoder passwordEncoder, String newPw) {
         this.password = passwordEncoder.encode(newPw);
     }
+
+    public void updateInfo(String name, String password, String birth, int asset, int income, String job, String region, int joinType) {
+        if(name != null && !name.equals(""))
+            this.name = name;
+        if(password != null && !password.equals(""))
+            this.password = password;
+        if(birth != null && !birth.equals(""))
+            this.birth = birth;
+        if(asset != 0)
+            this.asset = asset;
+        if(income != 0)
+            this.income = income;
+        if(job != null && !job.equals(""))
+            this.job = job;
+        if(region != null && !region.equals(""))
+            this.region = region;
+        if(joinType != 0)
+            this.joinType = joinType;
+    }
+
+
 }

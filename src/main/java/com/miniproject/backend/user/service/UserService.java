@@ -1,13 +1,22 @@
 package com.miniproject.backend.user.service;
 
 import com.miniproject.backend.user.domain.User;
+import com.miniproject.backend.user.dto.UserDTO;
 import com.miniproject.backend.user.dto.UserRequestDTO;
-
-import java.util.Optional;
+import com.miniproject.backend.user.dto.UserUpdateDTO;
 
 public interface UserService {
-    User signin(UserRequestDTO userRequestDTO);
+    User signup(UserRequestDTO userRequestDTO);
+
     User findUserByUserId(String userEmail);
-    Boolean updatePassword(String email, String newPassword);
+
     Boolean matchedPasswords(String email, String password);
+
+    Boolean checkDuplicationEmail(String email);
+
+    Boolean deleteUser(String email);
+
+    Boolean updateUser(String email, UserUpdateDTO.update update);
+
+    UserDTO selectUser(String email);
 }
