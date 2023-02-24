@@ -22,6 +22,10 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    /**
+     * 상품 목록 조회
+     * @return : 상품 목록
+     */
     @Override
     public List<ProductDto.Response> selectProductList() {
         List<LoanProduct> productsList = productRepository.findAll();
@@ -46,9 +50,14 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * 상품 상세 정보 조회
+     * @param productId : 상품 id
+     * @return : 상품 상세 정보
+     */
     @Override
     public ProductDto.DetailResponse findById(String productId) {
-        LoanProduct loanProduct = productRepository.findById(productId).orElseThrow(() -> new ProductException(ProductExceptionType.PRODUCT_NOT_EXIST));
+        LoanProduct loanProduct = productRepository.findById(productId).orElseThrow();
         return new ProductDto.DetailResponse(loanProduct);
     }
 
@@ -63,10 +72,9 @@ public class ProductServiceImpl implements ProductService {
 
         List<LoanProduct> products = productRepository.findByProductNmContaining(keyword);
         List<ProductDto.SearchResponseDto> searchList = products.stream().map(product -> new ProductDto.SearchResponseDto(product)).collect(Collectors.toList());
-        if(!(searchList.size() == 0)){
+        if (!(searchList.size() == 0)) {
             return searchList;
-        }
-        else {
+        } else {
             throw new ProductException(ProductExceptionType.SEARCH_NOT_EXIST);
         }
     }

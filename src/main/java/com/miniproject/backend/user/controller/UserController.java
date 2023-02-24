@@ -37,6 +37,12 @@ public class UserController {
         return new ResponseDTO<>().ok(result, "회원 탈퇴 성공");
     }
 
+    /**
+     * 사용자 정보 수정 API
+     * @param userDetails : 인증된 사용자 정보와 token 타입을 가진 객체
+     * @param update : 해당 사용자 정보 DTO
+     * @return :해당 유저가 수정요청한 정보 DTO + " 정보 수정 성공"
+     */
     @Operation(summary = "회원 정보 변경 API", description = "수정을 안하는 값은 null이나 \"\" 또는 0 으로 주세요.")
     @PutMapping("/users/me")
     public ResponseDTO<?> userUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UserUpdateDTO.update update) {

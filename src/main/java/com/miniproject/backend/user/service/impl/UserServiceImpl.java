@@ -87,6 +87,12 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    /**
+     * 사용자 정보 수정
+     * @param email : 사용자 email
+     * @param update : 사용자 정보를 가지고있는 DTO
+     * @return true:사용자 정보 수정
+     */
     @Override
     @Transactional
     public Boolean updateUser(String email, UserUpdateDTO.update update) {
