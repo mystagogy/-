@@ -11,7 +11,8 @@ public enum GlobalExceptionType implements CustomExceptionType {
     UNAUTHORIZED(401, HttpStatus.UNAUTHORIZED, "Unauthorized"),
     FORBIDDEN(403, HttpStatus.FORBIDDEN, "Forbidden"),
     NOT_FOUND(404, HttpStatus.NOT_FOUND, "Not found"),
-    INTERNAL_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error");
+    INTERNAL_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "Internal error"),
+    JWT_NOT_ALLOWED(405, HttpStatus.METHOD_NOT_ALLOWED, "Not Allowed");
 
 
     private final Integer errorCode;
