@@ -22,11 +22,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @RestController
 @RequiredArgsConstructor
@@ -89,11 +92,13 @@ public class LoginController {
     public AuthToken getToken(HttpServletResponse response, User user){
         AuthToken authToken = authTokenProvider.issueAccessToken(user);
         AuthToken refreshToken = authTokenProvider.issueRefreshToken(user);
-
-        Cookie cookie = new Cookie("refresh", refreshToken.getToken());
+        
+        ResponseCookie cookie = ResponseCookie.from("refresh",refreshToken.getToken())
+                        .sameSite("None")
+                        .secure(true).build();
         tokenService.createRefreshToken(user,refreshToken.getToken());
 
-        response.addCookie(cookie);
+        response.addHeader(SET_COOKIE, cookie.toString());
 
         log.info(String.valueOf(authToken.getToken()));
 
