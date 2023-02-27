@@ -22,7 +22,7 @@ public class UserRequestDTO {
     private String name;
 
     @Schema(description = "생년월일-뒷자리1자리", defaultValue = "2301013")
-    private String brith;
+    private String birth;
 
     @Schema(description = "가입 목적 (숫자로 입력)", defaultValue = "1")
     private int joinType;
@@ -32,7 +32,7 @@ public class UserRequestDTO {
                 .email(this.email)
                 .password(this.password)
                 .name(this.name)
-                .birth(this.brith)
+                .birth(this.birth)
                 .joinType(this.joinType)
                 .build();
     }
