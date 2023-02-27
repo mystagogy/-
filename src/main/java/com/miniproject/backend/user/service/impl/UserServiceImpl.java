@@ -33,13 +33,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User signup(UserRequestDTO userRequestDTO) {
         //이메일 중복 확인
-        User user = userRepository.findByEmail(userRequestDTO.getEmail()).orElseThrow(
-                () -> new UserException(UserExceptionType.ACCOUNT_NOT_EXIST)
-                );
+        Optional<User> user = userRepository.findByEmail(userRequestDTO.getEmail());
 
-        User newUser = userRequestDTO.toEntity();
-        newUser.encodePassword(passwordEncoder);
-        return userRepository.save(newUser);
+        if(user.isEmpty()){
+            User newUser = userRequestDTO.toEntity();
+            newUser.encodePassword(passwordEncoder);
+            return userRepository.save(newUser);
+        }else{
+            throw new UserException(UserExceptionType.DUPLICATION_EMAIL);
+        }
+
     }
 
     /**
