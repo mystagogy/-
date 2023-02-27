@@ -13,7 +13,7 @@ public class LoginResponseDTO {
     private Long id;
     private String email;
     private String name;
-    private String brith;
+    private String birth;
     private int joinType;
     private String accessToken;
 }
