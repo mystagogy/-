@@ -59,7 +59,7 @@ public class LoginController {
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
-                .brith(user.getBirth())
+                .birth(user.getBirth())
                 .joinType(user.getJoinType())
                 .accessToken(authToken.getToken())
                 .build();
