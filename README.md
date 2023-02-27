@@ -25,3 +25,9 @@
   - 장바구니
 - [이성제](https://github.com/devsj3586)
   - 대출 상품 조회
+  
+# Architecture
+![Slide1](https://user-images.githubusercontent.com/51091854/221533276-a8fc823c-dd7b-463f-8e8a-948845904489.jpg)
+
+# DB
+![image](https://user-images.githubusercontent.com/51091854/221533409-7002c90d-cb94-43fc-a7e4-0d105117037b.png)
