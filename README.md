@@ -9,7 +9,7 @@
 - Lombok
 - Thymeleaf
 - Build Tool: gradle
-- CI/CD: Jenkins 2.361.3
+- CI/CD: git action
 - Infra(PaaS): AWS EC2
 - DB: MariaDB 
 - Log: Slf4j
